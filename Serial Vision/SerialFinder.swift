@@ -9,36 +9,55 @@
 import Foundation
 
 class SerialFinder {
+    var serialLength: Int
+    var jamfProPartialSerials: Set<String>
     
-    let serialPrefixes = ["CO"]
-    let jamfProSerials = ["CO2T83GXGTFM", "CO2TT83FGRGS"]
+    init(serialLength: Int, jamfProSerials: [String]) {
+        self.serialLength = serialLength
+        self.jamfProPartialSerials = Set<String>()
+        self.setJamfProSerials(serials: jamfProSerials)
+    }
     
-    func potentialSerials(symbolProbabilitiesList: [[String: Double]]) -> [String: Double] {
+    func mergeDicts <K, V> (left: [K:V], right: [K:V]) -> [K:V] {
+        var result = left
+        for (k, v) in right {
+            result[k] = v
+        }
+        
+        return result
+    }
+    
+    private func setJamfProSerials(serials: [String]) {
+        // by adding every possible front part of each serial number, we will be able to prune non-existent serials
+        // in the potentialSerials method before building out each possible variation
+        for serial in serials {
+            var serialFront = ""
+            for character in serial {
+                serialFront.append(character)
+                jamfProPartialSerials.insert(serialFront)
+            }
+        }
+    }
+    
+    func potentialSerials(characterProbabilityDistributions: [[String: Double]]) -> [String: Double] {
         var serials = [String: Double]()
-        for serialPrefix in serialPrefixes {
-            for i in 0..<symbolProbabilitiesList.count - 11 { // max length for now is 12
-                let firstCharacterConfidence = symbolProbabilitiesList[i][String(Array(serialPrefix)[0])]
-                let secondCharacterConfidence = symbolProbabilitiesList[i + 1][String(Array(serialPrefix)[1])]
-                if(firstCharacterConfidence != nil && secondCharacterConfidence != nil) {
-                    // check if there is match with the serial prefix. i.e. "CO2T83GXGTFM" starts with "CO"
-                    // since there are only a handful of prefixes, we can filter out most noise checking for this
-                    
-                    serials = [serialPrefix: firstCharacterConfidence! * secondCharacterConfidence!]
-                    for j in i+2..<i+12 { // compute each potential serial number and its probability
-                        let oldSerials = serials // a dict in swift is of a Struct, which is a value type. so this copies it
-                        serials = [String: Double]()
-                        for (oldSerial, oldSerialProbability) in oldSerials {
-                            for (symbol, symbolProbability) in symbolProbabilitiesList[j] {
-                                serials[oldSerial + symbol] = oldSerialProbability * symbolProbability
-                            }
+        for i in 0...characterProbabilityDistributions.count - self.serialLength {
+            // iterate over each character distribution section of length "serialLength"
+            var partialSerials = ["":1.0] // serial dictionary contains an empty string with 100% probability at beginning
+            for j in i..<i+12 { // go through each character distribution in
+                var newPartialSerials = [String: Double]() // create a temporary dictionary containing new serials
+                for (partialSerial, partialSerialProbability) in partialSerials {
+                    for (character, characterProbability) in characterProbabilityDistributions[j] {
+                        let newPartialSerial = partialSerial + character
+                        if jamfProPartialSerials.contains(newPartialSerial) {
+                            newPartialSerials[newPartialSerial] = partialSerialProbability * characterProbability
                         }
                     }
                 }
+                partialSerials = newPartialSerials
             }
-            
-            return serials
+            serials = mergeDicts(left: serials, right: partialSerials) // add new serials of length j
         }
-        
-        return [String: Double]()
+        return serials
     }
 }

@@ -51,16 +51,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func detectTextCallback(results: [[String: Double]]) {
-        let serialFinder = SerialFinder()
-        var potentialSerials = serialFinder.potentialSerials(symbolProbabilitiesList: results)
-        var highestConfidence = 0.0
-        var likelySerial = ""
-        for potentialSerial in potentialSerials {
-            if potentialSerial.value > highestConfidence {
-                likelySerial = potentialSerial.key
-            }
+        for result in results {
+            print(result)
         }
-        resultLabel.text = likelySerial
+        let serialFinder = SerialFinder(serialLength: 12, jamfProSerials: ["CO2T83GXGTFM", "DLXNR94XG5VJ"])
+        let potentialSerials = serialFinder.potentialSerials(characterProbabilityDistributions: results)
+        print(potentialSerials)
+        for serial in potentialSerials.keys {
+            resultLabel.text = serial
+        }
     }
     
     internal func imagePickerController(_ picker: UIImagePickerController,

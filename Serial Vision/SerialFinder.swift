@@ -41,7 +41,7 @@ class SerialFinder {
     
     func potentialSerials(characterProbabilityDistributions: [[String: Double]]) -> [String: Double] {
         var serials = [String: Double]()
-        for i in 0...characterProbabilityDistributions.count - self.serialLength {
+        for i in 0...max(characterProbabilityDistributions.count - self.serialLength, 0) {
             // iterate over each character distribution section of length "serialLength"
             var partialSerials = ["":1.0] // serial dictionary contains an empty string with 100% probability at beginning
             for j in i..<i+12 { // go through each character distribution in

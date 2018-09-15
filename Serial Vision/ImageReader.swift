@@ -20,8 +20,9 @@ class ImageReader {
         classificationResults = [[:]]
     }
     
-    func detectText(image: UIImage, returnSize: Int, callback: @escaping (_: [[String: Double]]) -> ()) {
-        let convertedImage = image |> adjustColors |> convertToGrayscale
+    func detectText(image: UIImage, returnSize: Int, callback: @escaping ([[String: Double]]) -> ()) {
+        let convertedImage = image |> convertToGrayscale
+        saveImage(name: "adjustedImage", image: convertedImage)
         let handler = VNImageRequestHandler(cgImage: convertedImage.cgImage!)
         let request: VNDetectTextRectanglesRequest = VNDetectTextRectanglesRequest(completionHandler: { [unowned self] (request, error) in
             if (error != nil) {
@@ -33,12 +34,16 @@ class ImageReader {
                 if (results.count == 0) {
                     print("empty results")
                 }
+                var imageNumber = 0
+                let prefix = randomString(length: 4)
                 for textObservation in results {
                     for rectangleObservation in textObservation.characterBoxes! {
-                        let croppedImage = crop(image: image, rectangle: rectangleObservation)
+                        let croppedImage = crop(image: convertedImage, rectangle: rectangleObservation)
                         if let croppedImage = croppedImage {
                             let processedImage = preProcess(image: croppedImage)
+                            saveImage(name: prefix + "-" + String(imageNumber), image: processedImage)
                             self.classifyImage(image: processedImage, returnSize: returnSize)
+                            imageNumber+=1
                         }
                     }
                 }

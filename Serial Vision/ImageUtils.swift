@@ -93,7 +93,7 @@ func adjustColors(image: UIImage) -> UIImage {
         let beginImage = CIImage(image: image)
         currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
         currentFilter.setValue(0, forKey: kCIInputSaturationKey)
-        currentFilter.setValue(1.45, forKey: kCIInputContrastKey) //previous 1.5
+        //currentFilter.setValue(1.45, forKey: kCIInputContrastKey) //previous 1.5
         if let output = currentFilter.outputImage {
             if let cgimg = context.createCGImage(output, from: output.extent) {
                 let processedImage = UIImage(cgImage: cgimg)
@@ -167,11 +167,11 @@ func crop(image: UIImage, rectangle: VNRectangleObservation) -> UIImage? {
 func preProcess(image: UIImage) -> UIImage {
     let width = image.size.width
     let height = image.size.height
-    let addToHeight2 = height / 2
-    let addToWidth2 = ((6 * height) / 3 - width) / 2
+    let addToHeight = height / 5
+    let addToWidth = ((6 * height) / 3 - width) / 5
     let imageWithInsets = insertInsets(image: image,
-                                       insetWidthDimension: addToWidth2,
-                                       insetHeightDimension: addToHeight2)
+                                       insetWidthDimension: addToWidth,
+                                       insetHeightDimension: addToHeight)
     let size = CGSize(width: 28, height: 28)
     let resizedImage = resize(image: imageWithInsets, targetSize: size)
     let grayScaleImage = convertToGrayscale(image: resizedImage)

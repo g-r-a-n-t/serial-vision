@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		951782872149E9F80085DA2F /* Alphanum_28x28.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 951782862149E9F80085DA2F /* Alphanum_28x28.mlmodel */; };
 		951782892149F14F0085DA2F /* ImageUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951782882149F14F0085DA2F /* ImageUtils.swift */; };
+		951782A1214B4D210085DA2F /* ImageReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951782A0214B4D210085DA2F /* ImageReader.swift */; };
+		951782A3214B63980085DA2F /* SerialFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951782A2214B63980085DA2F /* SerialFinder.swift */; };
+		951782A5214C3EDC0085DA2F /* mobile-device-serials.txt in Resources */ = {isa = PBXBuildFile; fileRef = 951782A4214C3EDB0085DA2F /* mobile-device-serials.txt */; };
+		951782A7214C7E190085DA2F /* devUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951782A6214C7E190085DA2F /* devUtils.swift */; };
+		951782A9214DB94F0085DA2F /* OCR.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 951782A8214DB94F0085DA2F /* OCR.mlmodel */; };
 		C123E8EA2147118C00CFDA0A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C123E8E92147118C00CFDA0A /* AppDelegate.swift */; };
 		C123E8EC2147118C00CFDA0A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C123E8EB2147118C00CFDA0A /* ViewController.swift */; };
 		C123E8EF2147118C00CFDA0A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C123E8ED2147118C00CFDA0A /* Main.storyboard */; };
@@ -20,6 +25,11 @@
 /* Begin PBXFileReference section */
 		951782862149E9F80085DA2F /* Alphanum_28x28.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Alphanum_28x28.mlmodel; sourceTree = "<group>"; };
 		951782882149F14F0085DA2F /* ImageUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageUtils.swift; sourceTree = "<group>"; };
+		951782A0214B4D210085DA2F /* ImageReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageReader.swift; sourceTree = "<group>"; };
+		951782A2214B63980085DA2F /* SerialFinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerialFinder.swift; sourceTree = "<group>"; };
+		951782A4214C3EDB0085DA2F /* mobile-device-serials.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "mobile-device-serials.txt"; path = "../../../Downloads/mobile-device-serials.txt"; sourceTree = "<group>"; };
+		951782A6214C7E190085DA2F /* devUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = devUtils.swift; sourceTree = "<group>"; };
+		951782A8214DB94F0085DA2F /* OCR.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = OCR.mlmodel; path = ../../../Downloads/OCR.mlmodel; sourceTree = "<group>"; };
 		C123E8E62147118C00CFDA0A /* Serial Vision.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Serial Vision.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C123E8E92147118C00CFDA0A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C123E8EB2147118C00CFDA0A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -41,13 +51,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9517828A214AE1F90085DA2F /* images */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = images;
-			sourceTree = "<group>";
-		};
 		C123E8DD2147118C00CFDA0A = {
 			isa = PBXGroup;
 			children = (
@@ -67,7 +70,7 @@
 		C123E8E82147118C00CFDA0A /* Serial Vision */ = {
 			isa = PBXGroup;
 			children = (
-				9517828A214AE1F90085DA2F /* images */,
+				951782A4214C3EDB0085DA2F /* mobile-device-serials.txt */,
 				951782882149F14F0085DA2F /* ImageUtils.swift */,
 				951782862149E9F80085DA2F /* Alphanum_28x28.mlmodel */,
 				C123E8E92147118C00CFDA0A /* AppDelegate.swift */,
@@ -77,6 +80,9 @@
 				C123E8F52147118C00CFDA0A /* LaunchScreen.storyboard */,
 				C123E8F82147118C00CFDA0A /* Info.plist */,
 				C123E8F02147118C00CFDA0A /* Serial_Vision.xcdatamodeld */,
+				951782A0214B4D210085DA2F /* ImageReader.swift */,
+				951782A2214B63980085DA2F /* SerialFinder.swift */,
+				951782A6214C7E190085DA2F /* devUtils.swift */,
 			);
 			path = "Serial Vision";
 			sourceTree = "<group>";
@@ -139,6 +145,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				951782A5214C3EDC0085DA2F /* mobile-device-serials.txt in Resources */,
 				C123E8F72147118C00CFDA0A /* LaunchScreen.storyboard in Resources */,
 				C123E8F42147118C00CFDA0A /* Assets.xcassets in Resources */,
 				C123E8EF2147118C00CFDA0A /* Main.storyboard in Resources */,
@@ -152,8 +159,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				951782A1214B4D210085DA2F /* ImageReader.swift in Sources */,
+				951782A9214DB94F0085DA2F /* OCR.mlmodel in Sources */,
+				951782A7214C7E190085DA2F /* devUtils.swift in Sources */,
 				C123E8F22147118C00CFDA0A /* Serial_Vision.xcdatamodeld in Sources */,
 				C123E8EC2147118C00CFDA0A /* ViewController.swift in Sources */,
+				951782A3214B63980085DA2F /* SerialFinder.swift in Sources */,
 				C123E8EA2147118C00CFDA0A /* AppDelegate.swift in Sources */,
 				951782892149F14F0085DA2F /* ImageUtils.swift in Sources */,
 				951782872149E9F80085DA2F /* Alphanum_28x28.mlmodel in Sources */,

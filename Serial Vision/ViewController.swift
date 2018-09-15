@@ -47,14 +47,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         print(self.image ?? "No image selected")
         // TODO: - Implement the image reading
         let imageReader = ImageReader()
-        imageReader.detectText(image: self.image!, returnSize: 3, callback: detectTextCallback)
+        imageReader.detectText(image: self.image!, returnSize: 4, callback: detectTextCallback)
     }
     
     func detectTextCallback(results: [[String: Double]]) {
+        let mockSerials = mockJamfProSerials()
+        let realSerials = ["CO2T83GXGTFM", "DLXNR94XG5VJ", "CO2K21PKDRVG", "CO2WN1FFHV2R", "F9FT5J0ZHLF9", "CO2PQDLUG8WP"]
+        let serials = mockSerials + realSerials
         for result in results {
             print(result)
         }
-        let serialFinder = SerialFinder(serialLength: 12, jamfProSerials: ["CO2T83GXGTFM", "DLXNR94XG5VJ"])
+        let serialFinder = SerialFinder(serialLength: 12, jamfProSerials: serials)
         let potentialSerials = serialFinder.potentialSerials(characterProbabilityDistributions: results)
         print(potentialSerials)
         for serial in potentialSerials.keys {

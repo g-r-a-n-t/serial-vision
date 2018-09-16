@@ -8,7 +8,7 @@ There are three main components to this app. The first is text detection, by thi
 ### Text Detection
 Apple's general purpose language, Swift, contains a library named Vision. This library contains useful image analysis functionality. We used the text detection toolset to identify characters and crop them out one at a time. By doing so, we can generate the data required for character classification.
 
-For example, say we are given this image of a MacBook Pro. The serial number is "CO2T83GXGTFM" as seen on the bottom right.
+For example, say we are given this image of a MacBook Pro. The serial number is `CO2T83GXGTFM` as seen on the bottom right.
 
 ![MacBook Pro](https://raw.githubusercontent.com/g-r-a-n-t/serial-vision/master/images/macbook.png)
 
@@ -24,7 +24,7 @@ After finding the bounds of each character, we crop them out one at a time and r
 
 These are just a handful of the results. There are as many images generated for classification as there are characters detected in the image. This sample starts at the closing parenthesis before "Serial" and ends at the mistakenly detected character on the far right.
 
-We will now run these images through our CoreMl Model, a pre-trained model which we found online that categorizes capital letters and digits. The result on each character from left to right descending are below.
+We will now run these images through our CoreMl Model, a pre-trained alphanumeric classification model that we acquired online. The results on each image classification from left to right in descending order are below.
 
 ```
 ["V": 0.04213860630989075, "U": 0.0704030692577362, "M": 0.056483909487724304, "W": 0.6995975971221924]
@@ -47,13 +47,13 @@ We will now run these images through our CoreMl Model, a pre-trained model which
 ["L": 0.036839403212070465, "J": 0.031821999698877335, "I": 0.04585861787199974, "1": 0.038113344460725784]
 ```
 
-One of the problems that we have with this model is that it's not very confident. Take for example the first "C" in our serial number. The image clearly displays a "C", but our model is only 17% confident in that. In fact, it's actually 60% sure that it's a "E". Having a better model would certainly improve this project.
+One of the problems that we have with this model is that it's not very confident. Take for example the first `C` in our serial number. The image clearly displays a `C`, but our model is only `17%` confident in that. In fact, it's actually `60%` sure that it's a `E`. Having a better model would certainly improve this project.
 
 ### Serial Identification
 
-To deal with the lack of accuracy in our model, we must design an algorithm that can withstand some uncertainty. Having all the serial numbers we are looking for beforehand from Jamf Pro is very useful here. As you will see below, we do not to have a high performing model to consistently get the correct serial number.
+To deal with the lack of accuracy in our model, we must design an algorithm that can withstand some uncertainty. Having all the serial numbers we are looking for beforehand from Jamf Pro is very useful here. As you will see below, we do not need to have a high performing model to consistently get the correct serial number.
 
-Let start off by asking how many combinations of each 4 probable characters in a 12 character sequence there are. It would be `4^12 = 16777216`, not overwhelming, but certainly not efficient. If we were to do this for every 12 character sequences in the entire image, we could find a large set of possible serial numbers and their probabilities. From this, we could take the most likely sequence of 12 characters that resembles a serial number. Unfortunately, this would take too much time and be too inaccurate for our project. We should do better.
+Let start off by asking how many combinations of each 4 probable characters are in a 12 character sequence. It would be `4^12 = 16777216`, not overwhelming, but certainly not efficient. If we were to do this for every 12 character sequences in the entire image, we could find a large set of possible serial numbers and their probabilities. From this, we could take the most likely sequence of 12 characters that resembles a serial number. Unfortunately, this would take too much time and be too inaccurate for our project. We should do better.
 
 Let's do the same thing, but take the information from Jamf Pro into account. Let's say Jamf Pro provides us with a list of 1000 serials, what we could do is go through each partial serial starting from the front and build a hash table. For example, if we had the serial numbers `CO2T83GXGTFM` and `CO2T34FYVSTG` in our Jamf Pro server, we would build a hash table that contains these values.
 
@@ -78,7 +78,7 @@ CO2T34FYVS
 CO2T34FYVST
 CO2T34FYVSTG
 ```
-This would result in a hash table of at most 12000 entries, not very big. So what's the point of going through all of this hassle? It gives us the ability to quickly prune off non-existent serials when generating probable combinations. So when our algorithm is generating combinations, the amount is reduced only to those that are in Jamf Pro. Here it is stepping though the probability distribution sequence containing our serial number. 
+This would result in a hash table of at most 12000 entries, not very big. So what's the point of going through all of this hassle? It gives us the ability to quickly prune off non-existent serials when generating probable combinations. So when our algorithm is generating combinations, the amount is reduced only to those that are in Jamf Pro. Here it is stepping though the probability distribution sequence containing our serial number.
 ```
 ["G", "C", "E", "8"]
 Is G in the hash table: No
@@ -118,5 +118,8 @@ Is CO2T83GXGTFW in the hash table: No
 Is CO2T83GXGTFY in the hash table: No
 Is CO2T83GXGTFV in the hash table: No
 ```
+Our algorithm has correctly identified the serial number `CO2T83GXGTFM`. This only took roughly `4 * 12 = 48` computations as opposed to `4 ^ 12 = 16777216`, which is much faster.
 
-And there we have it, CO2T83GXGTFM is our serial number. We can now contact the Jamf Pro server and do whatever we would like to with this device.
+### Analysis
+
+The obvious trade off with this method as opposed to building a more accurate model is that our algorithm could misidentify as serial number that just so happens to be in one of the probability distribution sequences. The odds of this are slim with a distribution size of 4. For our algorithm to identify the wrong serial in an image containing 50 characters and a Jamf Pro containing 100,000 devices, it would take `(((4/36)^12) * 38) * 100,000 = 1 in 74,323 odds` Having a more accurate model would certainly help, but for the time we have, it may not happen.

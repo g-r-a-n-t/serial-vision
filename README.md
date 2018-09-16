@@ -1,32 +1,30 @@
 # Serial Vision
 
-A smart app capable of detecting serial numbers on a device. It integrates with a Jamf Pro server to enables quick and easy management of devices.
+This is a smart app capable of detecting serial numbers on a device. It integrates with Jamf Pro so users can more easily manage devices when away from their computer.
 
 ## Technical Implementation
-There are three main components to this app. The first is text detection, by this we mean detecting where characters are inside of an image. The second part is classifying the identified characters, this step is provides us with probability distributions for each identified character. The third step is taking these probability distributions and using that information with what information is provided by Jamf Pro to confidently identify the serial number being displayed in the image.
+There are three main components to this app. The first is text detection, by this we mean detecting where characters are inside of an image. The second part is classifying the identified characters, this step provides us with probability distributions for each identified character. The third step is taking these probability distributions and inferring what serial number is contained in the image.
 
 ### Text Detection
-We used Swift's Vision library to solve this problem. Vision provides reliable tools for analyzing images. We used the text detection tools provided in this library to identify characters and crop them out one at a time. This is how we set up character classification.
+Apple's general purpose language, Swift, contains a library named Vision. This library contains useful image analysis functionality. We used the text detection toolset to identify characters and crop them out one at a time. By doing so, we can generate the data required for character classification.
 
-For example, say we are given this image of a device:
+For example, say we are given this image of a MacBook Pro. The serial number is "CO2T83GXGTFM" as seen on the bottom right.
 
-![MacBook Pro](https://raw.githubusercontent.com/g-r-a-n-t/serial-vision/master/images/device-back.png)
+![MacBook Pro](https://raw.githubusercontent.com/g-r-a-n-t/serial-vision/master/images/macbook.png)
 
-Running text detection provides a result like this:
+Running the text detection query in vision will provide us with the bounds for each `word` and `character` in the image. `Words` refers to a group of `characters`. You can see that the serial number is grouped along with some other characters.
 
-![MacBook Pro Bounded](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/bounded-characters.png)
+![MacBook Pro Bounded](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/macbook-bounded.png)
 
 ### Text classification
 
-After finding the bounds of each character, we crop them out one at a time and run some basic preprocessing. The result is like this:
+After finding the bounds of each character, we crop them out one at a time and run some basic preprocessing. The model required 28x28 greyscale images, so we must resize and adjust the colors. The resulting images are below.
 
-![Characters](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/cropped-characters.png)
+![Characters](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/characters.png)
 
-^^^ fix this image
+These are just a handful of the results. There are as many images generated for classification as there are characters detected in the image. This sample starts at the closing parenthesis before "Serial" and ends at the mistakenly detected character on the far right.
 
-These are just a handful of the results. If you look closely, you can see where the characters correspond with the raw image. It starts just before "Serial" and ends with the logo that looks like and "E". The images surrounded by red a part of the serial number.
-
-We will now run these images through our CoreMl Model, a pre-trained model which we found online that categorizes capital letters and digits. The result on each character from left to right descending are:
+We will now run these images through our CoreMl Model, a pre-trained model which we found online that categorizes capital letters and digits. The result on each character from left to right descending are below.
 
 ```
 ["V": 0.04213860630989075, "U": 0.0704030692577362, "M": 0.056483909487724304, "W": 0.6995975971221924]
@@ -49,15 +47,16 @@ We will now run these images through our CoreMl Model, a pre-trained model which
 ["L": 0.036839403212070465, "J": 0.031821999698877335, "I": 0.04585861787199974, "1": 0.038113344460725784]
 ```
 
-One of the problems that we have with this model is that it's not very confident. Take for example the first "C" in our serial number. The image clearly displays a "C", but out model is only 17% confident in that. In fact, it's actually 60% sure that it's a "E". This is probably because this model was trained on different fonts and its not very familiar with this particular shape.
+One of the problems that we have with this model is that it's not very confident. Take for example the first "C" in our serial number. The image clearly displays a "C", but our model is only 17% confident in that. In fact, it's actually 60% sure that it's a "E". Having a better model would certainly improve this project.
 
 ### Serial Identification
 
-To deal with this lack of accuracy in our model, we have to design an algorithm that can handle a little uncertainty. Since we are given all of the serial numbers from our Jamf Pro server, we can take that information into account and make an educated guess.
+To deal with the lack of accuracy in our model, we must design an algorithm that can withstand some uncertainty. Having all the serial numbers we are looking for beforehand from Jamf Pro is very useful here. As you will see below, we do not to have a high performing model to consistently get the correct serial number.
 
-Let start off by asking how many combinations of each 4 probable characters in a 12 character sequence there are. It would be `4^12 = 16777216`, not overwhelming, but certainly not efficient. If we were to do this for every 12 character sequences in the entire image, we could find a large set of possible serial numbers and there probabilities. Not a bad start.
+Let start off by asking how many combinations of each 4 probable characters in a 12 character sequence there are. It would be `4^12 = 16777216`, not overwhelming, but certainly not efficient. If we were to do this for every 12 character sequences in the entire image, we could find a large set of possible serial numbers and their probabilities. From this, we could take the most likely sequence of 12 characters that resembles a serial number. Unfortunately, this would take too much time and be too inaccurate for our project. We should do better.
 
-Now let's do the same thing, but take the information from Jamf Pro into account. Let's say Jamf Pro provides us a list of 1000 serials, what we could do is go through each partial serial starting from the front and build a hash table. So if we had the serial numbers CO2T83GXGTFM and CO2T34FYVSTG in our Jamf Pro Server, that would add these values to our hash table:
+Let's do the same thing, but take the information from Jamf Pro into account. Let's say Jamf Pro provides us with a list of 1000 serials, what we could do is go through each partial serial starting from the front and build a hash table. For example, if we had the serial numbers `CO2T83GXGTFM` and `CO2T34FYVSTG` in our Jamf Pro server, we would build a hash table that contains these values.
+
 ```
 C
 CO
@@ -70,8 +69,6 @@ CO2T83GXG
 CO2T83GXGT
 CO2T83GXGTF
 CO2T83GXGTFM
-CO2
-CO2T
 CO2T3
 CO2T34
 CO2T34F
@@ -81,7 +78,7 @@ CO2T34FYVS
 CO2T34FYVST
 CO2T34FYVSTG
 ```
-This results in a hash table with a maximum size of 12000. So whats the point of going through all of this hassle? It gives us the ability to quickly prune off non-existent serials preemptively when generating probable combinations. The resulting calculations goes like this.
+This would result in a hash table of at most 12000 entries, not very big. So what's the point of going through all of this hassle? It gives us the ability to quickly prune off non-existent serials when generating probable combinations. So when our algorithm is generating combinations, the amount is reduced only to those that are in Jamf Pro. Here it is stepping though the probability distribution sequence containing our serial number. 
 ```
 ["G", "C", "E", "8"]
 Is G in the hash table: No

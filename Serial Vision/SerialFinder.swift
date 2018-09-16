@@ -11,11 +11,18 @@ import Foundation
 class SerialFinder {
     var serialLength: Int
     var jamfProPartialSerials: Set<String>
+    var frequentMistakes: [String: Set<String>]
     
     init(serialLength: Int, jamfProSerials: [String]) {
         self.serialLength = serialLength
         self.jamfProPartialSerials = Set<String>()
+        self.frequentMistakes = [:]
         self.setJamfProSerials(serials: jamfProSerials)
+        self.populateFrequentMistakes()
+    }
+    
+    func populateFrequentMistakes() {
+        self.frequentMistakes["7"] = ["1"]
     }
     
     func mergeDicts <K, V> (left: [K:V], right: [K:V]) -> [K:V] {
@@ -48,9 +55,18 @@ class SerialFinder {
                 var newPartialSerials = [String: Double]() // create a temporary dictionary containing new serials
                 for (partialSerial, partialSerialProbability) in partialSerials {
                     for (character, characterProbability) in characterProbabilityDistributions[j] {
-                        let newPartialSerial = partialSerial + character
+                        var newPartialSerial = partialSerial + character
                         if jamfProPartialSerials.contains(newPartialSerial) {
                             newPartialSerials[newPartialSerial] = partialSerialProbability * characterProbability
+                        }
+                        
+                        if self.frequentMistakes[character] != nil {
+                            for frequentMistake in self.frequentMistakes[character]! {
+                                newPartialSerial = partialSerial + frequentMistake
+                                if jamfProPartialSerials.contains(newPartialSerial) {
+                                    newPartialSerials[newPartialSerial] = partialSerialProbability * characterProbability
+                                }
+                            }
                         }
                     }
                 }

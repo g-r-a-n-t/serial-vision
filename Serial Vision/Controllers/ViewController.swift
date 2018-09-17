@@ -12,17 +12,10 @@ import CoreML
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
-    // MARK: - Storyboard References
+    // MARK: Storyboard References
     
     @IBOutlet weak var resultLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
-    
-    // Question so you must test for existance
-    var image: UIImage? {
-        didSet {
-            self.imageView.image = image
-        }
-    }
     
     var imagePicker: UIImagePickerController!
     
@@ -34,23 +27,26 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.imagePicker = UIImagePickerController()
         self.imagePicker.delegate = self
     }
-
-    // MARK: - IBActions
     
-    @IBAction func selectImageClicked(_ sender: Any) {
-        print("Image Clicked")
-        present(self.imagePicker, animated: true, completion: nil)
+    // MARK: - Image reader
+    
+    // Question so you must test for existance
+    var image: UIImage? {
+        didSet {
+            self.imageView.image = image
+            print("Run the algorithum to get the serial number")
+            print(self.image ?? "No image selected")
+            // TODO: - Implement the image reading
+            self.resultLabel.text = "Processing..."
+            self.resultLabel.textColor = UIColor.yellow
+            DispatchQueue.global(qos: .background).async {
+                let imageReader = ImageReader()
+                imageReader.detectText(image: self.image!, returnSize: 4, callback: self.detectTextCallback)
+            }
+        }
     }
     
-    @IBAction func runAction(_ sender: Any) {
-        print("Run the algorithum to get the serial number")
-        print(self.image ?? "No image selected")
-        // TODO: - Implement the image reading
-        let imageReader = ImageReader()
-        imageReader.detectText(image: self.image!, returnSize: 4, callback: detectTextCallback)
-    }
-    
-    func detectTextCallback(results: [[String: Double]]) {
+    fileprivate func detectTextCallback(results: [[String: Double]]) {
         let mockSerials = MockJamfProSerials()
         let realSerials = ["CO2T83GXGTFM", "DLXNR94XG5VJ", "CO2K21PKDRVG", "CO2WN1FFHV2R", "F9FT5J0ZHLF9", "CO2PQDLUG8WP"]
         let serials = mockSerials + realSerials
@@ -60,10 +56,22 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let serialFinder = SerialFinder(serialLength: 12, jamfProSerials: serials)
         let potentialSerials = serialFinder.potentialSerials(characterProbabilityDistributions: results)
         print(potentialSerials)
-        for serial in potentialSerials.keys {
-            resultLabel.text = serial
+        
+        let serial = potentialSerials.keys.first
+        DispatchQueue.main.async {
+            self.resultLabel.text = serial
+            self.resultLabel.textColor = UIColor.green
         }
     }
+
+    // MARK: - IBActions
+    
+    @IBAction func selectImageClicked(_ sender: Any) {
+        print("Image Clicked")
+        present(self.imagePicker, animated: true, completion: nil)
+    }
+    
+    // MARK: - UIImagePickerControllerDelegate
     
     internal func imagePickerController(_ picker: UIImagePickerController,
                                         didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {

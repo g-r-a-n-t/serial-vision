@@ -19,6 +19,7 @@
 		C123E8F42147118C00CFDA0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C123E8F32147118C00CFDA0A /* Assets.xcassets */; };
 		C123E8F72147118C00CFDA0A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C123E8F52147118C00CFDA0A /* LaunchScreen.storyboard */; };
 		C1B5D33121503B91008A5EE5 /* SerialCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B5D33021503B91008A5EE5 /* SerialCodeView.swift */; };
+		E73C81ED2150449F00EFD0AF /* mobile-device-serials.txt in Resources */ = {isa = PBXBuildFile; fileRef = E73C81EC2150449F00EFD0AF /* mobile-device-serials.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		C123E8F62147118C00CFDA0A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C123E8F82147118C00CFDA0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C1B5D33021503B91008A5EE5 /* SerialCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerialCodeView.swift; sourceTree = "<group>"; };
+		E73C81EC2150449F00EFD0AF /* mobile-device-serials.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "mobile-device-serials.txt"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +70,7 @@
 		C123E8E82147118C00CFDA0A /* Serial Vision */ = {
 			isa = PBXGroup;
 			children = (
+				E73C81EB215043F100EFD0AF /* Resources */,
 				C1B5D33B21503DAF008A5EE5 /* Utils */,
 				C1B5D33421503BD2008A5EE5 /* Delegates */,
 				C1B5D33A21503CF2008A5EE5 /* Models */,
@@ -141,6 +144,14 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		E73C81EB215043F100EFD0AF /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E73C81EC2150449F00EFD0AF /* mobile-device-serials.txt */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -199,6 +210,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E73C81ED2150449F00EFD0AF /* mobile-device-serials.txt in Resources */,
 				C123E8F72147118C00CFDA0A /* LaunchScreen.storyboard in Resources */,
 				C123E8F42147118C00CFDA0A /* Assets.xcassets in Resources */,
 				C123E8EF2147118C00CFDA0A /* Main.storyboard in Resources */,

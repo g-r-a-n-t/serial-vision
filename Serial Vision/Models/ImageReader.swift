@@ -22,6 +22,9 @@ class ImageReader {
     
     func detectText(image: UIImage, returnSize: Int, callback: @escaping ([[String: Double]]) -> ()) {
         let convertedImage = image.convertToGrayscale()
+        
+        SaveImage(name: "convertedImage", image: convertedImage)
+        
         let handler = VNImageRequestHandler(cgImage: convertedImage.cgImage!)
         let request: VNDetectTextRectanglesRequest = VNDetectTextRectanglesRequest(completionHandler: { [unowned self] (request, error) in
             if (error != nil) {

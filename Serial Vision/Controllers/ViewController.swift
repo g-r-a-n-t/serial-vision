@@ -39,12 +39,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             // TODO: - Implement the image reading
             self.resultLabel.text = "Processing..."
             self.resultLabel.textColor = UIColor.yellow
+            self.foundSerial = false
             DispatchQueue.global(qos: .background).async {
                 let imageReader = ImageReader()
                 imageReader.detectText(image: self.image!, returnSize: 4, callback: self.detectTextCallback)
             }
         }
     }
+    var foundSerial = false
     
     fileprivate func detectTextCallback(results: [[String: Double]]) {
         let mockSerials = MockJamfProSerials()
@@ -61,6 +63,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         DispatchQueue.main.async {
             self.resultLabel.text = serial
             self.resultLabel.textColor = UIColor.green
+            self.foundSerial = true
         }
     }
 
@@ -69,6 +72,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBAction func selectImageClicked(_ sender: Any) {
         print("Image Clicked")
         present(self.imagePicker, animated: true, completion: nil)
+    }
+    
+    @IBAction func tapOnSerialNumber(_ sender: Any) {
+        guard self.foundSerial else { return }
+        
+        // Prepare for the navigation
+        // And setup the desired subview correctly
+//        self.performSegue(withIdentifier: "Segue", sender: self)
     }
     
     // MARK: - UIImagePickerControllerDelegate

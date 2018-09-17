@@ -34,13 +34,13 @@ class ImageReader {
                     print("empty results")
                 }
                 var imageNumber = 0
-                let prefix = randomString(length: 4)
+                let prefix = RandomString(length: 4)
                 for textObservation in results {
                     for rectangleObservation in textObservation.characterBoxes! {
                         let croppedImage = convertedImage.crop(rectangle: rectangleObservation)
                         if let croppedImage = croppedImage {
                             let processedImage = croppedImage.preProcess()
-                            saveImage(name: prefix + "-" + String(imageNumber), image: processedImage)
+                            SaveImage(name: prefix + "-" + String(imageNumber), image: processedImage)
                             self.classifyImage(image: processedImage, returnSize: returnSize)
                             imageNumber+=1
                         }

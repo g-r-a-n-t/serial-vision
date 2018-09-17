@@ -106,11 +106,11 @@
 		C1B5D33621503C00008A5EE5 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				C123E8F82147118C00CFDA0A /* Info.plist */,
 				951782862149E9F80085DA2F /* Alphanum_28x28.mlmodel */,
 				C123E8ED2147118C00CFDA0A /* Main.storyboard */,
 				C123E8F32147118C00CFDA0A /* Assets.xcassets */,
 				C123E8F52147118C00CFDA0A /* LaunchScreen.storyboard */,
-				C123E8F82147118C00CFDA0A /* Info.plist */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -368,7 +368,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = LDWP7ZC68D;
-				INFOPLIST_FILE = "Serial Vision/Info.plist";
+				INFOPLIST_FILE = "Serial Vision/Assets/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -387,7 +387,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = LDWP7ZC68D;
-				INFOPLIST_FILE = "Serial Vision/Info.plist";
+				INFOPLIST_FILE = "Serial Vision/Assets/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

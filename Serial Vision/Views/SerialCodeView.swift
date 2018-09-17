@@ -8,8 +8,10 @@
 
 import UIKit
 
+// Designable class so we can build out the ui in interface builder
 @IBDesignable class SerialCodeView: UILabel {
     
+    // Inspectible so you play with the formating in the interface builder
     @IBInspectable var insets: CGFloat = 3
    
     override var intrinsicContentSize: CGSize {
@@ -22,6 +24,10 @@ import UIKit
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
     override func draw(_ rect: CGRect) {
+        // Don't draw anything if the context has not been initilized or there is no text in the label
+        guard let ctx = UIGraphicsGetCurrentContext(), self.text?.count ?? 0 > 0 else { return }
+        
+        // Drawing code
         let padding = UIEdgeInsets(
             top: self.insets * 2,
             left: self.insets * 2,
@@ -29,9 +35,6 @@ import UIKit
             right: self.insets * 2
         )
         super.drawText(in: rect.inset(by: padding))
-        
-        // Drawing code
-        guard let ctx = UIGraphicsGetCurrentContext() else { return }
         
         let suroundingFrame = CGRect(
             x: insets / 2,

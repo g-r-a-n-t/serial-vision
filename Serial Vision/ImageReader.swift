@@ -21,7 +21,7 @@ class ImageReader {
     }
     
     func detectText(image: UIImage, returnSize: Int, callback: @escaping ([[String: Double]]) -> ()) {
-        let convertedImage = image |> convertToGrayscale
+        let convertedImage = image.convertToGrayscale()
         let handler = VNImageRequestHandler(cgImage: convertedImage.cgImage!)
         let request: VNDetectTextRectanglesRequest = VNDetectTextRectanglesRequest(completionHandler: { [unowned self] (request, error) in
             if (error != nil) {
@@ -37,9 +37,9 @@ class ImageReader {
                 let prefix = randomString(length: 4)
                 for textObservation in results {
                     for rectangleObservation in textObservation.characterBoxes! {
-                        let croppedImage = crop(image: convertedImage, rectangle: rectangleObservation)
+                        let croppedImage = convertedImage.crop(rectangle: rectangleObservation)
                         if let croppedImage = croppedImage {
-                            let processedImage = preProcess(image: croppedImage)
+                            let processedImage = croppedImage.preProcess()
                             saveImage(name: prefix + "-" + String(imageNumber), image: processedImage)
                             self.classifyImage(image: processedImage, returnSize: returnSize)
                             imageNumber+=1

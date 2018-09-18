@@ -55,7 +55,7 @@ class SerialFinder {
         }
     }
     
-    func potentialSerials(characterProbabilityDistributions: [[String: Double]]) -> [String: Double] {
+    func matchingSerials(characterProbabilityDistributions: [[String: Double]]) -> [(key: String, value: Double)] {
         var serials = [String: Double]()
         for i in 0...max(characterProbabilityDistributions.count - self.serialLength, 0) {
             // iterate over each character distribution section of length "serialLength"
@@ -83,6 +83,7 @@ class SerialFinder {
             }
             serials = mergeDicts(left: serials, right: partialSerials) // add new serials of length j
         }
-        return serials
+        
+        return serials.sorted{$0.value > $1.value}
     }
 }

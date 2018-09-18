@@ -20,7 +20,7 @@ class ImageReader {
         classificationResults = [[:]]
     }
     
-    func detectText(image: UIImage, returnSize: Int, callback: @escaping ([[String: Double]]) -> ()) {
+    func classifyBoundedCharacters(image: UIImage, distributionSize: Int, callback: @escaping ([[String: Double]]) -> ()) {
         let convertedImage = image.convertToGrayscale()
         
         SaveImage(name: "convertedImage", image: convertedImage)
@@ -44,7 +44,7 @@ class ImageReader {
                         if let croppedImage = croppedImage {
                             let processedImage = croppedImage.preProcess()
                             //SaveImage(name: prefix + "-" + String(imageNumber), image: processedImage)
-                            self.classifyImage(image: processedImage, returnSize: returnSize)
+                            self.classifyImage(image: processedImage, distributionSize: distributionSize)
                             imageNumber+=1
                         }
                     }
@@ -62,11 +62,11 @@ class ImageReader {
         }
     }
     
-    private func classifyImage(image: UIImage, returnSize: Int) {
+    private func classifyImage(image: UIImage, distributionSize: Int) {
         let request = VNCoreMLRequest(model: model) { request, error in
             let results = request.results as! [VNClassificationObservation]
             var newEntry = [String: Double]()
-            for index in 0..<returnSize {
+            for index in 0..<distributionSize {
                 newEntry[results[index].identifier] = Double(results[index].confidence)
             }
             self.classificationResults.append(newEntry)

@@ -42,28 +42,26 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.foundSerial = false
             DispatchQueue.global(qos: .background).async {
                 let imageReader = ImageReader()
-                imageReader.detectText(image: self.image!.fixOrientation(), returnSize: 4, callback: self.detectTextCallback)
+                imageReader.classifyBoundedCharacters(image: self.image!.fixOrientation(), distributionSize: 4, callback: self.classificationsCallback)
             }
         }
     }
     var foundSerial = false
     
-    fileprivate func detectTextCallback(results: [[String: Double]]) {
+    fileprivate func classificationsCallback(results: [[String: Double]]) {
         let mockSerials = MockJamfProSerials()
         let realSerials = ["CO2T83GXGTFM", "DLXNR94XG5VJ", "CO2K21PKDRVG", "CO2WN1FFHV2R", "F9FT5J0ZHLF9", "CO2PQDLUG8WP", "CO2TLOUWGTFM"]
         let serials = mockSerials + realSerials
-        for result in results {
-            print(result)
-        }
         let serialFinder = SerialFinder(serialLength: 12, jamfProSerials: serials)
-        let potentialSerials = serialFinder.potentialSerials(characterProbabilityDistributions: results)
-        print(potentialSerials)
+        let matchingSerials = serialFinder.matchingSerials(characterProbabilityDistributions: results)
+        print(matchingSerials)
         
-        let serial = potentialSerials.keys.first
-        DispatchQueue.main.async {
-            self.resultLabel.text = serial
-            self.resultLabel.textColor = UIColor.green
-            self.foundSerial = true
+        if matchingSerials.count > 0 {
+            DispatchQueue.main.async {
+                self.resultLabel.text = matchingSerials[0].key
+                self.resultLabel.textColor = UIColor.green
+                self.foundSerial = true
+            }
         }
     }
 

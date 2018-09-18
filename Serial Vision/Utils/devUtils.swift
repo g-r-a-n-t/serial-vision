@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-func saveImage(name: String, image: UIImage) {
+func SaveImage(name: String, image: UIImage) {
     let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     // choose a name for your image
     let fileName = name + ".png"
@@ -27,7 +27,7 @@ func saveImage(name: String, image: UIImage) {
     }
 }
 
-func mockJamfProSerials() -> [String] {
+func MockJamfProSerials() -> [String] {
     if let filepath = Bundle.main.path(forResource: "mobile-device-serials", ofType: "txt") {
         do {
             let contents = try String(contentsOfFile: filepath)
@@ -47,7 +47,7 @@ func mockJamfProSerials() -> [String] {
     return []
 }
 
-func randomString(length: Int) -> String {
+func RandomString(length: Int) -> String {
     
     let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
     let len = UInt32(letters.length)

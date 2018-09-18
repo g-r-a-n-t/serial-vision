@@ -70,7 +70,6 @@ extension UIImage {
                 if(value != 0) {
                     count += 1
                 }
-                print(i, j, current.cgColor.components![i])
             }
             let avg = total / CGFloat(count)
             averages.append(avg)

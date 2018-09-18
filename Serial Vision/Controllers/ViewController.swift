@@ -42,7 +42,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.foundSerial = false
             DispatchQueue.global(qos: .background).async {
                 let imageReader = ImageReader()
-                imageReader.detectText(image: self.image!, returnSize: 4, callback: self.detectTextCallback)
+                imageReader.detectText(image: self.image!.fixOrientation(), returnSize: 4, callback: self.detectTextCallback)
             }
         }
     }

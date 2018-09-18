@@ -33,11 +33,11 @@ extension UIImage {
     func insertInsets(insetWidthDimension: CGFloat, insetHeightDimension: CGFloat)
         -> UIImage {
             let adjustedImage = self.adjustColors()
-            let upperLeftPoint: CGPoint = CGPoint(x: 1, y: 1)
-            let lowerLeftPoint: CGPoint = CGPoint(x: 1, y: adjustedImage.size.height - 2)
-            let upperRightPoint: CGPoint = CGPoint(x: adjustedImage.size.width - 2, y: 1)
-            let lowerRightPoint: CGPoint = CGPoint(x: adjustedImage.size.width - 2,
-                                                   y: adjustedImage.size.height - 2)
+            let upperLeftPoint: CGPoint = CGPoint(x: 0, y: 0)
+            let lowerLeftPoint: CGPoint = CGPoint(x: 0, y: adjustedImage.size.height - 1)
+            let upperRightPoint: CGPoint = CGPoint(x: adjustedImage.size.width - 1, y: 0)
+            let lowerRightPoint: CGPoint = CGPoint(x: adjustedImage.size.width - 1,
+                                                   y: adjustedImage.size.height - 1)
             let upperLeftColor: UIColor = adjustedImage.getPixelColor(pixel: upperLeftPoint)
             let lowerLeftColor: UIColor = adjustedImage.getPixelColor(pixel: lowerLeftPoint)
             let upperRightColor: UIColor = adjustedImage.getPixelColor(pixel: upperRightPoint)

@@ -12,6 +12,7 @@
 		951782A1214B4D210085DA2F /* ImageReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951782A0214B4D210085DA2F /* ImageReader.swift */; };
 		951782A3214B63980085DA2F /* SerialFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951782A2214B63980085DA2F /* SerialFinder.swift */; };
 		951782A7214C7E190085DA2F /* devUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951782A6214C7E190085DA2F /* devUtils.swift */; };
+		952C0F312150870F000FFD38 /* OCR.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 952C0F302150870F000FFD38 /* OCR.mlmodel */; };
 		C123E8EA2147118C00CFDA0A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C123E8E92147118C00CFDA0A /* AppDelegate.swift */; };
 		C123E8EC2147118C00CFDA0A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C123E8EB2147118C00CFDA0A /* ViewController.swift */; };
 		C123E8EF2147118C00CFDA0A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C123E8ED2147118C00CFDA0A /* Main.storyboard */; };
@@ -31,6 +32,7 @@
 		951782A0214B4D210085DA2F /* ImageReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageReader.swift; sourceTree = "<group>"; };
 		951782A2214B63980085DA2F /* SerialFinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerialFinder.swift; sourceTree = "<group>"; };
 		951782A6214C7E190085DA2F /* devUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = devUtils.swift; sourceTree = "<group>"; };
+		952C0F302150870F000FFD38 /* OCR.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = OCR.mlmodel; sourceTree = "<group>"; };
 		C123E8E62147118C00CFDA0A /* Serial Vision.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Serial Vision.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C123E8E92147118C00CFDA0A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C123E8EB2147118C00CFDA0A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 		C1B5D33621503C00008A5EE5 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				952C0F302150870F000FFD38 /* OCR.mlmodel */,
 				C123E8F82147118C00CFDA0A /* Info.plist */,
 				951782862149E9F80085DA2F /* Alphanum_28x28.mlmodel */,
 				C123E8ED2147118C00CFDA0A /* Main.storyboard */,
@@ -243,6 +246,7 @@
 				C1B5D34021506BF3008A5EE5 /* CoreHistory+CoreDataClass.swift in Sources */,
 				951782A3214B63980085DA2F /* SerialFinder.swift in Sources */,
 				C123E8EA2147118C00CFDA0A /* AppDelegate.swift in Sources */,
+				952C0F312150870F000FFD38 /* OCR.mlmodel in Sources */,
 				951782892149F14F0085DA2F /* ImageUtils.swift in Sources */,
 				951782872149E9F80085DA2F /* Alphanum_28x28.mlmodel in Sources */,
 			);

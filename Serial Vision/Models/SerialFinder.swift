@@ -23,6 +23,11 @@ class SerialFinder {
     
     func populateFrequentMistakes() {
         self.frequentMistakes["7"] = ["1"]
+        self.frequentMistakes["0"] = ["C", "O", "G"]
+        self.frequentMistakes["O"] = ["C", "0", "G"]
+        self.frequentMistakes["C"] = ["0", "O", "G"]
+        self.frequentMistakes["G"] = ["C", "O", "0"]
+
     }
     
     func mergeDicts <K, V> (left: [K:V], right: [K:V]) -> [K:V] {

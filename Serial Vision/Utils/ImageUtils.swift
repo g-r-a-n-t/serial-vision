@@ -33,11 +33,11 @@ extension UIImage {
     func insertInsets(insetWidthDimension: CGFloat, insetHeightDimension: CGFloat)
         -> UIImage {
             let adjustedImage = self.adjustColors()
-            let upperLeftPoint: CGPoint = CGPoint(x: 0, y: 0)
-            let lowerLeftPoint: CGPoint = CGPoint(x: 0, y: adjustedImage.size.height - 1)
-            let upperRightPoint: CGPoint = CGPoint(x: adjustedImage.size.width - 1, y: 0)
-            let lowerRightPoint: CGPoint = CGPoint(x: adjustedImage.size.width - 1,
-                                                   y: adjustedImage.size.height - 1)
+            let upperLeftPoint: CGPoint = CGPoint(x: 1, y: 1)
+            let lowerLeftPoint: CGPoint = CGPoint(x: 1, y: adjustedImage.size.height - 2)
+            let upperRightPoint: CGPoint = CGPoint(x: adjustedImage.size.width - 2, y: 1)
+            let lowerRightPoint: CGPoint = CGPoint(x: adjustedImage.size.width - 2,
+                                                   y: adjustedImage.size.height - 2)
             let upperLeftColor: UIColor = adjustedImage.getPixelColor(pixel: upperLeftPoint)
             let lowerLeftColor: UIColor = adjustedImage.getPixelColor(pixel: lowerLeftPoint)
             let upperRightColor: UIColor = adjustedImage.getPixelColor(pixel: upperRightPoint)
@@ -58,19 +58,25 @@ extension UIImage {
             return imageWithInsets!.convertTransparent(color: color)
     }
     
-    private func averageColor(fromColors colors: [UIColor]) -> UIColor {
+    func averageColor(fromColors colors: [UIColor]) -> UIColor {
         var averages = [CGFloat]()
-        for i in 0..<4 {
+        for i in 0..<3 {
             var total: CGFloat = 0
+            var count = 0
             for j in 0..<colors.count {
                 let current = colors[j]
                 let value = CGFloat(current.cgColor.components![i])
                 total += value
+                if(value != 0) {
+                    count += 1
+                }
+                print(i, j, current.cgColor.components![i])
             }
-            let avg = total / CGFloat(colors.count)
+            let avg = total / CGFloat(count)
             averages.append(avg)
         }
-        return UIColor(red: averages[0], green: averages[1], blue: averages[2], alpha: averages[3])
+        let highestAvg = max(averages[0], averages[1], averages[2])
+        return UIColor(red: highestAvg, green: highestAvg, blue: highestAvg, alpha: 1)
     }
     
     func adjustColors() -> UIImage {
@@ -103,6 +109,8 @@ extension UIImage {
             return self
         }
     }
+    
+    
     
     func convertTransparent(color: UIColor) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
@@ -153,10 +161,10 @@ extension UIImage {
     func preProcess() -> UIImage {
         let width = self.size.width
         let height = self.size.height
-        let addToHeight = height / 5
-        let addToWidth = ((6 * height) / 3 - width) / 5
+        let addToHeight = height / 20
+        let addToWidth = ((6 * height) / 3 - width) / 20
         let imageWithInsets = self.insertInsets(insetWidthDimension: addToWidth,
-                                                insetHeightDimension: addToHeight)
+                                           insetHeightDimension: addToHeight)
         let size = CGSize(width: 28, height: 28)
         let resizedImage = imageWithInsets.resize(targetSize: size)
         let grayScaleImage = resizedImage.convertToGrayscale()

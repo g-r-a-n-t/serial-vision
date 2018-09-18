@@ -16,7 +16,7 @@ class ImageReader {
     var classificationResults: [[String: Double]]
     
     init() {
-        model = try? VNCoreMLModel(for: Alphanum_28x28().model)
+        model = try? VNCoreMLModel(for: OCR().model)
         classificationResults = [[:]]
     }
     
@@ -43,7 +43,7 @@ class ImageReader {
                         let croppedImage = convertedImage.crop(rectangle: rectangleObservation)
                         if let croppedImage = croppedImage {
                             let processedImage = croppedImage.preProcess()
-                            SaveImage(name: prefix + "-" + String(imageNumber), image: processedImage)
+                            //SaveImage(name: prefix + "-" + String(imageNumber), image: processedImage)
                             self.classifyImage(image: processedImage, returnSize: returnSize)
                             imageNumber+=1
                         }

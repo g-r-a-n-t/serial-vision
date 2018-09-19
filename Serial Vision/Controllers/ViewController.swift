@@ -11,7 +11,7 @@ import Vision
 import CoreML
 import AVFoundation
 
-class ViewController: UIViewController, UINavigationControllerDelegate {
+class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptureVideoDataOutputSampleBufferDelegate {
 
     // MARK: Storyboard References
     
@@ -20,13 +20,67 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     @IBOutlet weak var imageView: UIImageView!
     
     private let imageReader = ImageReader()
-    private var foundSerial = false
+    private var findingSerial = false
     private var lastCheck = 0
+    
+    private var captureSession: AVCaptureSession?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let captureSession = CaptureSession(delegate: self, previewView: self.imageView)
-        captureSession.startRunning()
+        
+        self.captureSession = AVCaptureSession()
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            self.captureSession?.sessionPreset = .hd1280x720
+        } else {
+            self.captureSession?.sessionPreset = .photo
+        }
+        
+        do {
+            guard let device = AVCaptureDevice.default(for: .video) else {
+                return
+            }
+            
+            let deviceInput = try AVCaptureDeviceInput(device: device)
+            if self.captureSession?.canAddInput(deviceInput) ?? false {
+                self.captureSession!.addInput(deviceInput)
+            }
+        } catch {
+            print("Failed to create capture device input, error=\(error.localizedDescription)")
+            return
+        }
+        
+        let videoDataOutput = AVCaptureVideoDataOutput()
+        videoDataOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String: kCMPixelFormat_32BGRA]
+        videoDataOutput.alwaysDiscardsLateVideoFrames = true
+        videoDataOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "VideoDataOutputQueue"))
+        
+        if self.captureSession?.canAddOutput(videoDataOutput) ?? false {
+            self.captureSession!.addOutput(videoDataOutput)
+        }
+        
+        let connection = videoDataOutput.connection(with: .video)
+        connection?.isEnabled = true
+        
+        let previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession!)
+        previewLayer.backgroundColor = UIColor.black.cgColor
+        previewLayer.videoGravity = .resizeAspect
+        
+        let rootLayer = self.imageView.layer
+        rootLayer.masksToBounds = true
+        previewLayer.frame = rootLayer.bounds
+        rootLayer.addSublayer(previewLayer)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.captureSession?.startRunning()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        self.captureSession?.stopRunning()
     }
     
     fileprivate func classificationsCallback(results: [[String: Double]]) {
@@ -41,33 +95,23 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
             DispatchQueue.main.async {
                 self.resultLabel.text = matchingSerials[0].key
                 self.resultLabel.textColor = UIColor.green
-                self.foundSerial = true
             }
         }
+        self.findingSerial = false
     }
 
     // MARK: - IBActions
     @IBAction func tapOnSerialNumber(_ sender: Any) {}
-}
-
-extension ViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
-    public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)!
-        let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
-        let uiImage = convert(cmage: ciImage)
-        
-        let time = Int(NSDate().timeIntervalSince1970)
-        if !foundSerial &&  time - lastCheck > 2 {
-            print("orientation0", uiImage.imageOrientation.rawValue)
-            imageReader.classifyBoundedCharacters(image: uiImage.fixOrientation(), distributionSize: 4, callback: classificationsCallback)
-            lastCheck = time
-        }
-    }
     
-    func convert(cmage:CIImage) -> UIImage {
-        let context:CIContext = CIContext.init(options: nil)
-        let cgImage:CGImage = context.createCGImage(cmage, from: cmage.extent)!
-        let image:UIImage = UIImage.init(cgImage: cgImage, scale: 1, orientation: UIImage.Orientation.right)
-        return image
+    public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        guard !self.findingSerial else {
+            return
+        }
+        findingSerial = true
+        DispatchQueue.global(qos: .background).async {
+            let uiImage = UIImage(sampleBuffer: sampleBuffer)
+            print("orientation0", uiImage!.imageOrientation.rawValue)
+            self.imageReader.classifyBoundedCharacters(image: uiImage!.fixOrientation(), distributionSize: 4, callback: self.classificationsCallback)
+        }
     }
 }

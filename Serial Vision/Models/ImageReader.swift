@@ -21,9 +21,11 @@ class ImageReader {
     }
     
     func classifyBoundedCharacters(image: UIImage, distributionSize: Int, callback: @escaping ([[String: Double]]) -> ()) {
+        print("image detection", NSDate().timeIntervalSince1970)
         let convertedImage = image.convertToGrayscale()
+        print("orientation1", image.imageOrientation.rawValue)
         
-        SaveImage(name: "convertedImage", image: convertedImage)
+        //SaveImage(name: "convertedImage", image: convertedImage)
         
         let handler = VNImageRequestHandler(cgImage: convertedImage.cgImage!)
         let request: VNDetectTextRectanglesRequest = VNDetectTextRectanglesRequest(completionHandler: { [unowned self] (request, error) in
@@ -63,6 +65,7 @@ class ImageReader {
     }
     
     private func classifyImage(image: UIImage, distributionSize: Int) {
+        print("image classification", NSDate().timeIntervalSince1970)
         let request = VNCoreMLRequest(model: model) { request, error in
             let results = request.results as! [VNClassificationObservation]
             var newEntry = [String: Double]()

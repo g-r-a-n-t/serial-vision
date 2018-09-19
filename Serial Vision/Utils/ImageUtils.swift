@@ -2,8 +2,23 @@
 import Foundation
 import UIKit
 import Vision
+import AVKit
 
 extension UIImage {
+    convenience init?(sampleBuffer: CMSampleBuffer) {
+        guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
+            return nil
+        }
+        let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
+        
+        let context = CIContext.init(options: nil)
+        guard let cgImage = context.createCGImage(ciImage, from: ciImage.extent) else {
+            return nil
+        }
+        
+        self.init(cgImage: cgImage, scale: 1, orientation: UIImage.Orientation.right)
+    }
+    
     func resize(targetSize: CGSize) -> UIImage {
         let rect = CGRect(x: 0, y: 0, width: targetSize.width, height: targetSize.height)
         UIGraphicsBeginImageContextWithOptions(targetSize, false, 1.0)

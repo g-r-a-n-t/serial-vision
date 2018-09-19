@@ -20,10 +20,12 @@ class ImageReader {
         classificationResults = [[:]]
     }
     
-    func detectText(image: UIImage, returnSize: Int, callback: @escaping ([[String: Double]]) -> ()) {
+    func classifyBoundedCharacters(image: UIImage, distributionSize: Int, callback: @escaping ([[String: Double]]) -> ()) {
+        print("image detection", NSDate().timeIntervalSince1970)
         let convertedImage = image.convertToGrayscale()
+        print("orientation1", image.imageOrientation.rawValue)
         
-        SaveImage(name: "convertedImage", image: convertedImage)
+        //SaveImage(name: "convertedImage", image: convertedImage)
         
         let handler = VNImageRequestHandler(cgImage: convertedImage.cgImage!)
         let request: VNDetectTextRectanglesRequest = VNDetectTextRectanglesRequest(completionHandler: { [unowned self] (request, error) in
@@ -44,7 +46,7 @@ class ImageReader {
                         if let croppedImage = croppedImage {
                             let processedImage = croppedImage.preProcess()
                             //SaveImage(name: prefix + "-" + String(imageNumber), image: processedImage)
-                            self.classifyImage(image: processedImage, returnSize: returnSize)
+                            self.classifyImage(image: processedImage, distributionSize: distributionSize)
                             imageNumber+=1
                         }
                     }
@@ -62,11 +64,12 @@ class ImageReader {
         }
     }
     
-    private func classifyImage(image: UIImage, returnSize: Int) {
+    private func classifyImage(image: UIImage, distributionSize: Int) {
+        print("image classification", NSDate().timeIntervalSince1970)
         let request = VNCoreMLRequest(model: model) { request, error in
             let results = request.results as! [VNClassificationObservation]
             var newEntry = [String: Double]()
-            for index in 0..<returnSize {
+            for index in 0..<distributionSize {
                 newEntry[results[index].identifier] = Double(results[index].confidence)
             }
             self.classificationResults.append(newEntry)

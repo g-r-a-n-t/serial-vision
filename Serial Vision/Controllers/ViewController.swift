@@ -9,26 +9,68 @@
 import UIKit
 import Vision
 import CoreML
+import AVFoundation
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptureVideoDataOutputSampleBufferDelegate {
 
     // MARK: Storyboard References
     
     @IBOutlet weak var resultLabel: UILabel!
+    //@IBOutlet weak var cameraPreviewView: UIView!
     @IBOutlet weak var imageView: UIImageView!
     
-    var imagePicker: UIImagePickerController!
+    private let imageReader = ImageReader()
+    private var findingSerial = false
+    private var lastCheck = 0
     let requestService = RequestService()
     var searchResults: [MobileDeviceRecord] = []
     
+    private var captureSession: AVCaptureSession?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        self.resultLabel.text = "Select an image to begin"
-        self.getMobileDeviceRecords()
         
-        self.imagePicker = UIImagePickerController()
-        self.imagePicker.delegate = self
+        self.captureSession = AVCaptureSession()
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            self.captureSession?.sessionPreset = .hd1280x720
+        } else {
+            self.captureSession?.sessionPreset = .photo
+        }
+        
+        do {
+            guard let device = AVCaptureDevice.default(for: .video) else {
+                return
+            }
+            
+            let deviceInput = try AVCaptureDeviceInput(device: device)
+            if self.captureSession?.canAddInput(deviceInput) ?? false {
+                self.captureSession!.addInput(deviceInput)
+            }
+        } catch {
+            print("Failed to create capture device input, error=\(error.localizedDescription)")
+            return
+        }
+        
+        let videoDataOutput = AVCaptureVideoDataOutput()
+        videoDataOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String: kCMPixelFormat_32BGRA]
+        videoDataOutput.alwaysDiscardsLateVideoFrames = true
+        videoDataOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "VideoDataOutputQueue"))
+        
+        if self.captureSession?.canAddOutput(videoDataOutput) ?? false {
+            self.captureSession!.addOutput(videoDataOutput)
+        }
+        
+        let connection = videoDataOutput.connection(with: .video)
+        connection?.isEnabled = true
+        
+        let previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession!)
+        previewLayer.backgroundColor = UIColor.black.cgColor
+        previewLayer.videoGravity = .resizeAspect
+        
+        let rootLayer = self.imageView.layer
+        rootLayer.masksToBounds = true
+        previewLayer.frame = rootLayer.bounds
+        rootLayer.addSublayer(previewLayer)
     }
     
     func getMobileDeviceRecords() {
@@ -43,73 +85,47 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
-    // MARK: - Image reader
-    
-    // Question so you must test for existance
-    var image: UIImage? {
-        didSet {
-            self.imageView.image = image
-            print("Run the algorithum to get the serial number")
-            print(self.image ?? "No image selected")
-            // TODO: - Implement the image reading
-            self.resultLabel.text = "Processing..."
-            self.resultLabel.textColor = UIColor.yellow
-            self.foundSerial = false
-            DispatchQueue.global(qos: .background).async {
-                let imageReader = ImageReader()
-                imageReader.detectText(image: self.image!.fixOrientation(), returnSize: 4, callback: self.detectTextCallback)
-            }
-        }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.captureSession?.startRunning()
     }
-    var foundSerial = false
     
-    fileprivate func detectTextCallback(results: [[String: Double]]) {
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        self.captureSession?.stopRunning()
+    }
+    
+    fileprivate func classificationsCallback(results: [[String: Double]]) {
         let mockSerials = MockJamfProSerials()
         let realSerials = ["CO2T83GXGTFM", "DLXNR94XG5VJ", "CO2K21PKDRVG", "CO2WN1FFHV2R", "F9FT5J0ZHLF9", "CO2PQDLUG8WP", "CO2TLOUWGTFM"]
         let serials = mockSerials + realSerials
-        for result in results {
-            print(result)
-        }
         let serialFinder = SerialFinder(serialLength: 12, jamfProSerials: serials)
-        let potentialSerials = serialFinder.potentialSerials(characterProbabilityDistributions: results)
-        print(potentialSerials)
+        let matchingSerials = serialFinder.matchingSerials(characterProbabilityDistributions: results)
+        print(matchingSerials)
         
-        let serial = potentialSerials.keys.first
-        DispatchQueue.main.async {
-            self.resultLabel.text = serial
-            self.resultLabel.textColor = UIColor.green
-            self.foundSerial = true
+        if matchingSerials.count > 0 {
+            DispatchQueue.main.async {
+                self.resultLabel.text = matchingSerials[0].key
+                self.resultLabel.textColor = UIColor.green
+            }
         }
+        self.findingSerial = false
     }
 
     // MARK: - IBActions
+    @IBAction func tapOnSerialNumber(_ sender: Any) {}
     
-    @IBAction func selectImageClicked(_ sender: Any) {
-        print("Image Clicked")
-        present(self.imagePicker, animated: true, completion: nil)
-    }
-    
-    @IBAction func tapOnSerialNumber(_ sender: Any) {
-        guard self.foundSerial else { return }
-        
-        // Prepare for the navigation
-        // And setup the desired subview correctly
-//        self.performSegue(withIdentifier: "Segue", sender: self)
-    }
-    
-    // MARK: - UIImagePickerControllerDelegate
-    
-    internal func imagePickerController(_ picker: UIImagePickerController,
-                                        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        // Gracefully fail
-        self.image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
-        
-        if self.image == nil {
-            print("This info marker failed to confrom")
+    public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        guard !self.findingSerial else {
+            return
         }
-        
-        // Dismiss the picker to return to original view controller.
-        dismiss(animated: true, completion: nil)
+        findingSerial = true
+        DispatchQueue.global(qos: .background).async {
+            let uiImage = UIImage(sampleBuffer: sampleBuffer)
+            print("orientation0", uiImage!.imageOrientation.rawValue)
+            self.imageReader.classifyBoundedCharacters(image: uiImage!.fixOrientation(), distributionSize: 4, callback: self.classificationsCallback)
+        }
     }
 }
-

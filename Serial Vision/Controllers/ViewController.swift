@@ -29,6 +29,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //Load Jamf Pro inventory
+        self.getMobileDeviceRecords()
+        
         self.captureSession = AVCaptureSession()
         if UIDevice.current.userInterfaceIdiom == .phone {
             self.captureSession?.sessionPreset = .hd1920x1080

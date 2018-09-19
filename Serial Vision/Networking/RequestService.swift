@@ -22,8 +22,10 @@ class RequestService {
     
     func getSearchResults(searchTerm: String, completion: @escaping QueryResult) {
         dataTask?.cancel()
+        let credentials = JamfPro.init()
         if var urlComponents = URLComponents(string: "https://recbcct.kube.jamf.build/JSSResource/computers/subset/basic") {
-//            urlComponents.query = "media=music&entity=song&term=\(searchTerm)"
+            urlComponents.user = credentials.username
+            urlComponents.password = credentials.password
             guard let url = urlComponents.url else { return }
             dataTask = defaultSession.dataTask(with: url) { data, response, error in
                 defer { self.dataTask = nil }

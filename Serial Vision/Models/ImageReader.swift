@@ -39,7 +39,7 @@ class ImageReader {
                     print("empty results")
                 }
                 var imageNumber = 0
-                let prefix = RandomString(length: 4)
+//                let prefix = RandomString(length: 4)
                 for textObservation in results {
                     for rectangleObservation in textObservation.characterBoxes! {
                         let croppedImage = convertedImage.crop(rectangle: rectangleObservation)

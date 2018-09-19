@@ -30,7 +30,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
         super.viewDidLoad()
         
         //Load Jamf Pro inventory
-        self.getMobileDeviceRecords()
+//        self.getMobileDeviceRecords()
         
         self.captureSession = AVCaptureSession()
         if UIDevice.current.userInterfaceIdiom == .phone {
@@ -81,7 +81,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
     
     func getMobileDeviceRecords() {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        requestService.getSearchResults(searchTerm: "searchText") { results, errorMessage in
+        requestService.getMobileDevices() { results, errorMessage in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             if let results = results {
                 self.searchResults = results

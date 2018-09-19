@@ -16,32 +16,35 @@ class RequestService {
     var records: [MobileDeviceRecord] = []
     var errorMessage = ""
     
-    let defaultSession = URLSession(configuration: .default)
     var dataTask: URLSessionDataTask?
     
     
-    func getSearchResults(searchTerm: String, completion: @escaping QueryResult) {
+    func getMobileDevices(completion: @escaping QueryResult) {
         dataTask?.cancel()
         let credentials = JamfPro.init()
-        if var urlComponents = URLComponents(string: "https://recbcct.kube.jamf.build/JSSResource/computers/subset/basic") {
-            urlComponents.user = credentials.username
-            urlComponents.password = credentials.password
-            guard let url = urlComponents.url else { return }
-            dataTask = defaultSession.dataTask(with: url) { data, response, error in
-                defer { self.dataTask = nil }
-                if let error = error {
-                    self.errorMessage += "DataTask error: " + error.localizedDescription + "\n"
-                } else if let data = data,
-                    let response = response as? HTTPURLResponse,
-                    response.statusCode == 200 {
-                    self.updateRequestResults(data)
-                    DispatchQueue.main.async {
-                        completion(self.records, self.errorMessage)
-                    }
+        let mobileDeviceUrl = URL(string: "https://recbcct.kube.jamf.build/JSSResource/computers/subset/basic")
+        let credential = URLCredential(user: credentials.username, password: credentials.password, persistence: URLCredential.Persistence.forSession)
+        
+        let protectionSpace = URLProtectionSpace(host: "recbcct.kube.jamf.build", port: 443, protocol: "https", realm: "Restricted", authenticationMethod: NSURLAuthenticationMethodHTTPBasic)
+        URLCredentialStorage.shared.setDefaultCredential(credential, for: protectionSpace)
+        
+        let config = URLSessionConfiguration.default
+        let session = URLSession(configuration: config)
+        
+        dataTask = session.dataTask(with: mobileDeviceUrl!) { data, response, error in
+            defer { self.dataTask = nil }
+            if let error = error {
+                self.errorMessage += "DataTask error: " + error.localizedDescription + "\n"
+            } else if let data = data,
+                let response = response as? HTTPURLResponse,
+                response.statusCode == 200 {
+                self.updateRequestResults(data)
+                DispatchQueue.main.async {
+                    completion(self.records, self.errorMessage)
                 }
             }
-            dataTask?.resume()
         }
+        dataTask?.resume()
     }
     
     fileprivate func updateRequestResults(_ data: Data) {
@@ -75,6 +78,5 @@ class RequestService {
             }
         }
     }
-    
 }
 

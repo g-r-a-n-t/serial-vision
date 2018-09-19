@@ -16,7 +16,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
     // MARK: Storyboard References
     
     @IBOutlet weak var resultLabel: UILabel!
-    //@IBOutlet weak var cameraPreviewView: UIView!
     @IBOutlet weak var imageView: UIImageView!
     
     private let imageReader = ImageReader()
@@ -32,7 +31,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
         
         self.captureSession = AVCaptureSession()
         if UIDevice.current.userInterfaceIdiom == .phone {
-            self.captureSession?.sessionPreset = .hd1280x720
+            self.captureSession?.sessionPreset = .hd1920x1080
         } else {
             self.captureSession?.sessionPreset = .photo
         }
@@ -46,6 +45,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
             if self.captureSession?.canAddInput(deviceInput) ?? false {
                 self.captureSession!.addInput(deviceInput)
             }
+            
+            try device.lockForConfiguration()
+            device.videoZoomFactor = 3.0
+            device.unlockForConfiguration()
         } catch {
             print("Failed to create capture device input, error=\(error.localizedDescription)")
             return

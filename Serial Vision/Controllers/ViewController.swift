@@ -18,14 +18,29 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var imageView: UIImageView!
     
     var imagePicker: UIImagePickerController!
+    let requestService = RequestService()
+    var searchResults: [MobileDeviceRecord] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.resultLabel.text = "Select an image to begin"
+        self.getMobileDeviceRecords()
         
         self.imagePicker = UIImagePickerController()
         self.imagePicker.delegate = self
+    }
+    
+    func getMobileDeviceRecords() {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        requestService.getSearchResults(searchTerm: "searchText") { results, errorMessage in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            if let results = results {
+                self.searchResults = results
+                print(results)
+            }
+            if !errorMessage.isEmpty { print("Search error: " + errorMessage) }
+        }
     }
     
     // MARK: - Image reader

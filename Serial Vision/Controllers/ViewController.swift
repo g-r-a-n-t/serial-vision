@@ -22,7 +22,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
     private var findingSerial = false
     private var foundSerial = false
     let requestService = RequestService()
-    var searchResults: [MobileDeviceRecord] = []
+    var searchResults: [ComputerRecord] = []
     
     private var captureSession: AVCaptureSession?
     
@@ -30,9 +30,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
         super.viewDidLoad()
         self.resultLabel.text = "Hold Camera to Serial#"
         self.resultLabel.textColor = UIColor.lightGray
-        
-        //Load Jamf Pro inventory
-        self.getMobileDeviceRecords()
+    
+        self.getJamfInventory()
         
         self.captureSession = AVCaptureSession()
         if UIDevice.current.userInterfaceIdiom == .phone {
@@ -81,9 +80,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
         rootLayer.addSublayer(previewLayer)
     }
     
-    func getMobileDeviceRecords() {
+    func getJamfInventory() {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        requestService.getMobileDevices() { results, errorMessage in
+        requestService.getComputerRecords() { results, errorMessage in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             if let results = results {
                 self.searchResults = results

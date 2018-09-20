@@ -1,5 +1,5 @@
 //
-//  MobileDeviceRecord.swift
+//  ComputerRecord.swift
 //  Serial Vision
 //
 //  Created by David Brazeau on 9/18/18.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class MobileDeviceRecord {
+class ComputerRecord {
     
     let id: Int
     let deviceName: String

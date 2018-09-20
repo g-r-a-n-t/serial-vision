@@ -36,93 +36,75 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="db5-50-M4f">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="db5-50-M4f">
                                 <rect key="frame" x="0.0" y="20" width="375" height="598"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Result" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="prT-oN-1vG" customClass="SerialCodeView" customModule="Serial_Vision" customModuleProvider="target">
-                                <rect key="frame" x="157.5" y="56" width="60" height="32.5"/>
-                                <gestureRecognizers/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="insets">
-                                        <real key="value" value="3"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hBc-fs-ILn" customClass="SerialCodeView" customModule="Serial_Vision" customModuleProvider="target">
+                                <rect key="frame" x="164.5" y="550" width="46" height="30"/>
+                                <state key="normal" title="Button"/>
                                 <connections>
-                                    <outletCollection property="gestureRecognizers" destination="Gxf-8I-COi" appends="YES" id="6y3-bu-xAl"/>
-                                </connections>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qfD-wB-UGy">
-                                <rect key="frame" x="149.5" y="552" width="76" height="30"/>
-                                <state key="normal" title="Take Photo"/>
-                                <connections>
-                                    <action selector="selectImageClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="taf-kf-JKa"/>
+                                    <action selector="tapOnSerialNumber:" destination="BYZ-38-t0r" eventType="touchUpInside" id="30K-FF-RsO"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="db5-50-M4f" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="3mN-7f-rIm"/>
-                            <constraint firstItem="prT-oN-1vG" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="36" id="AFp-Z5-Mz8"/>
-                            <constraint firstItem="qfD-wB-UGy" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Hm5-Lh-w9m"/>
-                            <constraint firstItem="db5-50-M4f" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="MTt-Iz-Vy0"/>
-                            <constraint firstItem="db5-50-M4f" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="RGU-Gy-zwF"/>
-                            <constraint firstItem="prT-oN-1vG" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="fg3-oi-sSC"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="qfD-wB-UGy" secondAttribute="bottom" constant="36" id="plW-F1-hqP"/>
-                            <constraint firstItem="db5-50-M4f" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="quy-3P-Io1"/>
+                            <constraint firstItem="hBc-fs-ILn" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="TnI-Mm-0Pu"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="hBc-fs-ILn" secondAttribute="bottom" constant="38" id="iV7-PY-UN2"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <tabBarItem key="tabBarItem" systemItem="search" id="M9W-s9-TFO"/>
                     <connections>
                         <outlet property="imageView" destination="db5-50-M4f" id="FZI-Za-SSX"/>
-                        <outlet property="resultLabel" destination="prT-oN-1vG" id="ck5-oJ-ELP"/>
+                        <outlet property="serialButton" destination="hBc-fs-ILn" id="63l-Kg-vQO"/>
+                        <segue destination="kCj-cC-SnF" kind="show" identifier="FoundSerialSegue" id="byp-3y-F6x"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="Gxf-8I-COi">
-                    <connections>
-                        <action selector="tapOnSerialNumber:" destination="BYZ-38-t0r" id="XFX-vd-we2"/>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-378" y="-72"/>
         </scene>
         <!--History-->
         <scene sceneID="aOK-4A-CRD">
             <objects>
-                <tableViewController id="VKs-aw-OHY" sceneMemberID="viewController">
+                <tableViewController id="VKs-aw-OHY" customClass="HistoryTableController" customModule="Serial_Vision" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="7EK-bM-ZsV">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="serialCell" textLabel="4cn-k7-3vr" detailTextLabel="Iwc-rI-Q1e" style="IBUITableViewCellStyleSubtitle" id="lG2-6Q-X32">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="serialCell" id="lG2-6Q-X32" customClass="HistoryCell" customModule="Serial_Vision" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lG2-6Q-X32" id="a3N-7Z-DGg">
                                     <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Serial Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4cn-k7-3vr">
-                                            <rect key="frame" x="16" y="5" width="109" height="20.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Device Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x2g-4l-dzp">
+                                            <rect key="frame" x="16" y="11" width="102" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Iwc-rI-Q1e">
-                                            <rect key="frame" x="16" y="25.5" width="28" height="14.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Serial Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ciA-6W-zhQ">
+                                            <rect key="frame" x="224" y="11" width="109" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="ciA-6W-zhQ" firstAttribute="top" secondItem="a3N-7Z-DGg" secondAttribute="topMargin" id="BqJ-CT-Kqn"/>
+                                        <constraint firstItem="x2g-4l-dzp" firstAttribute="top" secondItem="a3N-7Z-DGg" secondAttribute="topMargin" id="Brv-lH-WoR"/>
+                                        <constraint firstItem="x2g-4l-dzp" firstAttribute="leading" secondItem="a3N-7Z-DGg" secondAttribute="leadingMargin" id="Gfc-rh-Amz"/>
+                                        <constraint firstItem="ciA-6W-zhQ" firstAttribute="trailing" secondItem="a3N-7Z-DGg" secondAttribute="trailingMargin" id="rho-QH-0g4"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="deviceName" destination="x2g-4l-dzp" id="1nu-Yy-URy"/>
+                                    <outlet property="serialNumber" destination="ciA-6W-zhQ" id="fcn-DB-45U"/>
                                     <segue destination="kCj-cC-SnF" kind="show" id="nhq-Uu-AJE"/>
                                 </connections>
                             </tableViewCell>
@@ -138,10 +120,10 @@
             </objects>
             <point key="canvasLocation" x="577" y="628"/>
         </scene>
-        <!--View Controller-->
+        <!--Computer Controller-->
         <scene sceneID="7ES-ik-6yQ">
             <objects>
-                <viewController id="kCj-cC-SnF" sceneMemberID="viewController">
+                <viewController id="kCj-cC-SnF" customClass="ComputerController" customModule="Serial_Vision" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="HfU-rK-0mu">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -171,4 +153,7 @@
             <point key="canvasLocation" x="-378" y="627"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="byp-3y-F6x"/>
+    </inferredMetricsTieBreakers>
 </document>

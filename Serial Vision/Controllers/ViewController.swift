@@ -15,7 +15,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
 
     // MARK: Storyboard References
     
-    @IBOutlet weak var resultLabel: UILabel!
+    @IBOutlet weak var serialButton: SerialCodeView!
     @IBOutlet weak var imageView: UIImageView!
     
     private let imageReader = ImageReader()
@@ -23,12 +23,19 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
     private var foundSerial = false
     let requestService = RequestService()
     
+    var serialNumber: String? {
+        didSet {
+            self.serialButton.setTitle(self.serialNumber, for: .normal)
+        }
+    }
+    
     private var captureSession: AVCaptureSession?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.resultLabel.text = "Hold Camera to Serial#"
-        self.resultLabel.textColor = UIColor.lightGray
+        self.serialButton.setTitle("Hold Camera to Serial#", for: .normal)
+//        self.resultLabel.textColor = UIColor.lightGray
+        self.serialButton.setTitleColor(.lightGray, for: .normal)
     
         self.getJamfInventory()
         
@@ -103,7 +110,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
     
     fileprivate func classificationsCallback(results: [[String: Double]]) {
         let mockSerials = MockJamfProSerials()
-        let realSerials = ["CO2T83GXGTFM", "DLXNR94XG5VJ", "CO2K21PKDRVG", "CO2WN1FFHV2R", "F9FT5J0ZHLF9", "CO2PQDLUG8WP", "CO2TLOUWGTFM"]
+        let realSerials = ["CO2T83GXGTFM", "DLXNR94XG5VJ", "CO2K21PKDRVG", "CO2WN1FFHV2R", "F9FT5J0ZHLF9", "CO2PQDLUG8WP", "CO2TLOUWGTFM", "C02RJ321G8WM"]
         let serials = mockSerials + realSerials
         let serialFinder = SerialFinder(serialLength: 12, jamfProSerials: serials)
         let matchingSerials = serialFinder.matchingSerials(characterProbabilityDistributions: results)
@@ -111,8 +118,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
         
         if matchingSerials.count > 0 {
             DispatchQueue.main.async {
-                self.resultLabel.text = matchingSerials[0].key
-                self.resultLabel.textColor = UIColor.green
+                self.serialNumber = matchingSerials[0].key
+                self.serialButton.setTitleColor(.green, for: .normal)
                 self.foundSerial = true
             }
         }
@@ -120,7 +127,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
     }
 
     // MARK: - IBActions
-    @IBAction func tapOnSerialNumber(_ sender: Any) {}
+    @IBAction func tapOnSerialNumber(_ sender: Any) {
+        if self.serialNumber != nil {
+            self.performSegue(withIdentifier: "FoundSerialSegue", sender: self)
+        }
+    }
     
     public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         guard !self.findingSerial && !self.foundSerial else {
@@ -130,6 +141,18 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
         DispatchQueue.global(qos: .background).async {
             let uiImage = UIImage(sampleBuffer: sampleBuffer)
             self.imageReader.classifyBoundedCharacters(image: uiImage!.fixOrientation(), distributionSize: 4, callback: self.classificationsCallback)
+        }
+    }
+    
+    
+    // MARK: - Navigation
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+        if let controller = segue.destination as? ComputerController, segue.identifier == "FoundSerialSegue" {
+            controller.serialNumber = self.serialNumber
         }
     }
 }

@@ -143,14 +143,15 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
         }
     }
     
-    
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
-        if let controller = segue.destination as? ComputerController, segue.identifier == "FoundSerialSegue" {
+        if let navController = segue.destination as? UINavigationController,
+            let controller = navController.topViewController as? ComputerController,
+            segue.identifier == "FoundSerialSegue" {
             controller.serialNumber = self.serialNumber
             controller.allowDismiss()
         }

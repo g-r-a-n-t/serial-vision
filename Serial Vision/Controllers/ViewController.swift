@@ -20,7 +20,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
     
     private let imageReader = ImageReader()
     private var findingSerial = false
-    private var lastCheck = 0
+    private var foundSerial = false
     let requestService = RequestService()
     var searchResults: [MobileDeviceRecord] = []
     
@@ -28,6 +28,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.resultLabel.text = "Hold Camera to Serial#"
+        self.resultLabel.textColor = UIColor.lightGray
         
         //Load Jamf Pro inventory
 //        self.getMobileDeviceRecords()
@@ -50,7 +52,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
             }
             
             try device.lockForConfiguration()
-            device.videoZoomFactor = 3.0
+            device.videoZoomFactor = 4.0
             device.unlockForConfiguration()
         } catch {
             print("Failed to create capture device input, error=\(error.localizedDescription)")
@@ -115,6 +117,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
             DispatchQueue.main.async {
                 self.resultLabel.text = matchingSerials[0].key
                 self.resultLabel.textColor = UIColor.green
+                self.foundSerial = true
             }
         }
         self.findingSerial = false
@@ -124,13 +127,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
     @IBAction func tapOnSerialNumber(_ sender: Any) {}
     
     public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        guard !self.findingSerial else {
+        guard !self.findingSerial && !self.foundSerial else {
             return
         }
         findingSerial = true
         DispatchQueue.global(qos: .background).async {
             let uiImage = UIImage(sampleBuffer: sampleBuffer)
-            print("orientation0", uiImage!.imageOrientation.rawValue)
             self.imageReader.classifyBoundedCharacters(image: uiImage!.fixOrientation(), distributionSize: 4, callback: self.classificationsCallback)
         }
     }

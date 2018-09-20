@@ -15,7 +15,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
 
     // MARK: Storyboard References
     
-    @IBOutlet weak var serialButton: SerialCodeView!
+    @IBOutlet weak var resultLabel: SerialCodeView!
     @IBOutlet weak var imageView: UIImageView!
     
     private let imageReader = ImageReader()
@@ -25,7 +25,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
     
     var serialNumber: String? {
         didSet {
-            self.serialButton.setTitle(self.serialNumber, for: .normal)
+            self.resultLabel.text = self.serialNumber
         }
     }
     
@@ -33,9 +33,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.serialButton.setTitle("Hold Camera to Serial#", for: .normal)
-//        self.resultLabel.textColor = UIColor.lightGray
-        self.serialButton.setTitleColor(.lightGray, for: .normal)
+        self.resultLabel.text = "Hold Camera to Serial #"
+        self.resultLabel.textColor = UIColor.lightGray
     
         self.getJamfInventory()
         
@@ -119,7 +118,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
         if matchingSerials.count > 0 {
             DispatchQueue.main.async {
                 self.serialNumber = matchingSerials[0].key
-                self.serialButton.setTitleColor(.green, for: .normal)
+                self.resultLabel.textColor = .green
                 self.foundSerial = true
             }
         }
@@ -153,6 +152,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
         // Pass the selected object to the new view controller.
         if let controller = segue.destination as? ComputerController, segue.identifier == "FoundSerialSegue" {
             controller.serialNumber = self.serialNumber
+            controller.allowDismiss()
         }
     }
 }

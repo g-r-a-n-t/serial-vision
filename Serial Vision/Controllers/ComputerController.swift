@@ -23,6 +23,11 @@ class ComputerController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    func allowDismiss() {
+        var item = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismiss(animated:completion:)))
+        self.navigationItem.leftBarButtonItem = item
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         print(self.serialNumber)
     }

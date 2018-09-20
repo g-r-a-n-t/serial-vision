@@ -9,7 +9,7 @@
 import UIKit
 
 // Designable class so we can build out the ui in interface builder
-@IBDesignable class SerialCodeView: UIButton {
+@IBDesignable class SerialCodeView: UILabel {
     
     // Inspectible so you play with the formating in the interface builder
     @IBInspectable var insets: CGFloat = 3
@@ -25,9 +25,8 @@ import UIKit
     // An empty implementation adversely affects performance during animation.
     override func draw(_ rect: CGRect) {
         // Don't draw anything if the context has not been initilized or there is no text in the label
-        guard let ctx = UIGraphicsGetCurrentContext(), self.titleLabel?.text?.count ?? 0 > 0 else { return }
+        guard let ctx = UIGraphicsGetCurrentContext(), self.text?.count ?? 0 > 0 else { return }
         
-        ctx.clear(rect)
         // Drawing code
         let padding = UIEdgeInsets(
             top: self.insets * 2,
@@ -35,7 +34,7 @@ import UIKit
             bottom: self.insets * 2,
             right: self.insets * 2
         )
-        super.titleLabel?.drawText(in: rect.inset(by: padding))
+        super.drawText(in: rect.inset(by: padding))
         
         let suroundingFrame = CGRect(
             x: insets / 2,
@@ -46,7 +45,7 @@ import UIKit
         
         ctx.beginPath()
         ctx.setLineWidth(self.insets)
-        ctx.setStrokeColor(self.titleLabel!.textColor.cgColor)
+        ctx.setStrokeColor(self.textColor.cgColor)
         ctx.setLineCap(.round)
         ctx.setLineJoin(.round)
         ctx.addLines(between: [

@@ -11,13 +11,13 @@ import Foundation
 class RequestService {
     
     typealias JSONDictionary = [String: Any]
-    typealias QueryResult = ([MobileDeviceRecord]?, String) -> ()
+    typealias QueryResult = ([ComputerRecord]?, String) -> ()
     
-    var records: [MobileDeviceRecord] = []
+    var records: [ComputerRecord] = []
     var errorMessage = ""
     var dataTask: URLSessionDataTask?
     
-    func getMobileDevices(completion: @escaping QueryResult) {
+    func getComputerRecords(completion: @escaping QueryResult) {
         dataTask?.cancel()
         
         let myURL = NSURL(string: "https://recbcct.kube.jamf.build/JSSResource/computers/subset/basic")
@@ -71,7 +71,7 @@ class RequestService {
                 
                 print("*** Storing serial number: ", serialNumber)
                 
-                records.append(MobileDeviceRecord(id: id, deviceName: deviceName, serialNumber: serialNumber, username: username))
+                records.append(ComputerRecord(id: id, deviceName: deviceName, serialNumber: serialNumber, username: username))
             } else {
                 errorMessage += "Problem parsing trackDictionary\n"
             }

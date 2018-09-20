@@ -19,10 +19,14 @@
 		C123E8F42147118C00CFDA0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C123E8F32147118C00CFDA0A /* Assets.xcassets */; };
 		C123E8F72147118C00CFDA0A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C123E8F52147118C00CFDA0A /* LaunchScreen.storyboard */; };
 		C1B5D33121503B91008A5EE5 /* SerialCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B5D33021503B91008A5EE5 /* SerialCodeView.swift */; };
+		C1B8A1422154293B00A53321 /* CoreHistory+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B8A13F2154293B00A53321 /* CoreHistory+CoreDataProperties.swift */; };
+		C1B8A1432154293B00A53321 /* CoreComputer+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B8A1402154293B00A53321 /* CoreComputer+CoreDataClass.swift */; };
+		C1B8A1442154293B00A53321 /* CoreComputer+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B8A1412154293B00A53321 /* CoreComputer+CoreDataProperties.swift */; };
+		C1B8A1462154295F00A53321 /* CoreHistory+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B8A1452154295F00A53321 /* CoreHistory+CoreDataClass.swift */; };
+		C1B8A14821542AE600A53321 /* CoreData+utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B8A14721542AE600A53321 /* CoreData+utils.swift */; };
 		E73C81ED2150449F00EFD0AF /* mobile-device-serials.txt in Resources */ = {isa = PBXBuildFile; fileRef = E73C81EC2150449F00EFD0AF /* mobile-device-serials.txt */; };
 		E73C81EF2151429800EFD0AF /* OCR.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = E73C81EE2151428E00EFD0AF /* OCR.mlmodel */; };
 		E73C81F8215167E500EFD0AF /* RequestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73C81F7215167E500EFD0AF /* RequestService.swift */; };
-		E73C81FA2153ED2700EFD0AF /* ComputerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73C81F92153ED2700EFD0AF /* ComputerRecord.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,10 +44,14 @@
 		C123E8F62147118C00CFDA0A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C123E8F82147118C00CFDA0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C1B5D33021503B91008A5EE5 /* SerialCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerialCodeView.swift; sourceTree = "<group>"; };
+		C1B8A13F2154293B00A53321 /* CoreHistory+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreHistory+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		C1B8A1402154293B00A53321 /* CoreComputer+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreComputer+CoreDataClass.swift"; sourceTree = "<group>"; };
+		C1B8A1412154293B00A53321 /* CoreComputer+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreComputer+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		C1B8A1452154295F00A53321 /* CoreHistory+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CoreHistory+CoreDataClass.swift"; sourceTree = "<group>"; };
+		C1B8A14721542AE600A53321 /* CoreData+utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreData+utils.swift"; sourceTree = "<group>"; };
 		E73C81EC2150449F00EFD0AF /* mobile-device-serials.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "mobile-device-serials.txt"; sourceTree = "<group>"; };
 		E73C81EE2151428E00EFD0AF /* OCR.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = OCR.mlmodel; path = "Serial Vision/Assets/OCR.mlmodel"; sourceTree = SOURCE_ROOT; };
 		E73C81F7215167E500EFD0AF /* RequestService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestService.swift; sourceTree = "<group>"; };
-		E73C81F92153ED2700EFD0AF /* ComputerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerRecord.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +137,11 @@
 		C1B5D33721503C68008A5EE5 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				C1B8A14721542AE600A53321 /* CoreData+utils.swift */,
+				C1B8A1452154295F00A53321 /* CoreHistory+CoreDataClass.swift */,
+				C1B8A13F2154293B00A53321 /* CoreHistory+CoreDataProperties.swift */,
+				C1B8A1402154293B00A53321 /* CoreComputer+CoreDataClass.swift */,
+				C1B8A1412154293B00A53321 /* CoreComputer+CoreDataProperties.swift */,
 				C123E8F02147118C00CFDA0A /* Serial_Vision.xcdatamodeld */,
 			);
 			path = CoreData;
@@ -139,7 +152,6 @@
 			children = (
 				951782A0214B4D210085DA2F /* ImageReader.swift */,
 				951782A2214B63980085DA2F /* SerialFinder.swift */,
-				E73C81F92153ED2700EFD0AF /* ComputerRecord.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -243,16 +255,20 @@
 			files = (
 				951782A1214B4D210085DA2F /* ImageReader.swift in Sources */,
 				E73C81EF2151429800EFD0AF /* OCR.mlmodel in Sources */,
+				C1B8A14821542AE600A53321 /* CoreData+utils.swift in Sources */,
 				951782A7214C7E190085DA2F /* devUtils.swift in Sources */,
 				C123E8F22147118C00CFDA0A /* Serial_Vision.xcdatamodeld in Sources */,
 				C1B5D33121503B91008A5EE5 /* SerialCodeView.swift in Sources */,
+				C1B8A1422154293B00A53321 /* CoreHistory+CoreDataProperties.swift in Sources */,
 				E73C81F8215167E500EFD0AF /* RequestService.swift in Sources */,
 				C123E8EC2147118C00CFDA0A /* ViewController.swift in Sources */,
 				951782A3214B63980085DA2F /* SerialFinder.swift in Sources */,
+				C1B8A1462154295F00A53321 /* CoreHistory+CoreDataClass.swift in Sources */,
 				C123E8EA2147118C00CFDA0A /* AppDelegate.swift in Sources */,
+				C1B8A1432154293B00A53321 /* CoreComputer+CoreDataClass.swift in Sources */,
 				951782892149F14F0085DA2F /* ImageUtils.swift in Sources */,
 				951782872149E9F80085DA2F /* Alphanum_28x28.mlmodel in Sources */,
-				E73C81FA2153ED2700EFD0AF /* ComputerRecord.swift in Sources */,
+				C1B8A1442154293B00A53321 /* CoreComputer+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -399,7 +415,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = LDWP7ZC68D;
+				DEVELOPMENT_TEAM = V7JGZY6Z4Z;
 				INFOPLIST_FILE = "Serial Vision/Assets/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -418,7 +434,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = LDWP7ZC68D;
+				DEVELOPMENT_TEAM = V7JGZY6Z4Z;
 				INFOPLIST_FILE = "Serial Vision/Assets/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = (

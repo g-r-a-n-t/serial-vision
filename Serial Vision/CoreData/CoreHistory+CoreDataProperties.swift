@@ -1,8 +1,8 @@
 //
-//  CoreSerial+CoreDataProperties.swift
+//  CoreHistory+CoreDataProperties.swift
 //  Serial Vision
 //
-//  Created by Brandon Roehl on 9/17/18.
+//  Created by Brandon Roehl on 9/20/18.
 //  Copyright © 2018 Jamf. All rights reserved.
 //
 //
@@ -14,10 +14,10 @@ import CoreData
 extension CoreHistory {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<CoreHistory> {
-        return NSFetchRequest<CoreHistory>(entityName: "CoreSerial")
+        return NSFetchRequest<CoreHistory>(entityName: "CoreHistory")
     }
 
-    @NSManaged public var code: String?
-    @NSManaged public var date: NSDate?
+    @NSManaged public var serialNumber: String
+    @NSManaged public var date: NSDate
 
 }

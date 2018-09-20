@@ -11,9 +11,8 @@ import Foundation
 class RequestService {
     
     typealias JSONDictionary = [String: Any]
-    typealias QueryResult = ([ComputerRecord]?, String) -> ()
+    typealias QueryResult = ([CoreComputer]?, String) -> ()
     
-    var records: [ComputerRecord] = []
     var errorMessage = ""
     var dataTask: URLSessionDataTask?
     
@@ -39,7 +38,7 @@ class RequestService {
                 response.statusCode == 200 {
                 self.updateRequestResults(data)
                 DispatchQueue.main.async {
-                    completion(self.records, self.errorMessage)
+                    completion(CoreComputer.getAll(), self.errorMessage)
                 }
             }
         }
@@ -48,7 +47,7 @@ class RequestService {
     
     fileprivate func updateRequestResults(_ data: Data) {
         var response: JSONDictionary?
-        records.removeAll()
+        CoreComputer.deleteAll()
         
         do {
             response = try JSONSerialization.jsonObject(with: data, options: []) as? JSONDictionary
@@ -71,7 +70,7 @@ class RequestService {
                 
                 print("*** Storing serial number: ", serialNumber)
                 
-                records.append(ComputerRecord(id: id, deviceName: deviceName, serialNumber: serialNumber, username: username))
+                _ = CoreComputer(id: id, deviceName: deviceName, serialNumber: serialNumber, username: username)
             } else {
                 errorMessage += "Problem parsing trackDictionary\n"
             }

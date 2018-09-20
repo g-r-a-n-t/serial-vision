@@ -22,7 +22,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
     private var findingSerial = false
     private var foundSerial = false
     let requestService = RequestService()
-    var searchResults: [ComputerRecord] = []
     
     private var captureSession: AVCaptureSession?
     
@@ -84,10 +83,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         requestService.getComputerRecords() { results, errorMessage in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            if let results = results {
-                self.searchResults = results
-                print(results)
-            }
+            
+            if results != nil { print(results!) }
             if !errorMessage.isEmpty { print("Search error: " + errorMessage) }
         }
     }

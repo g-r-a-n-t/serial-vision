@@ -15,23 +15,22 @@ class RequestService {
     
     var records: [MobileDeviceRecord] = []
     var errorMessage = ""
-    
     var dataTask: URLSessionDataTask?
-    
     
     func getMobileDevices(completion: @escaping QueryResult) {
         dataTask?.cancel()
-        let credentials = JamfPro.init()
-        let mobileDeviceUrl = URL(string: "https://recbcct.kube.jamf.build/JSSResource/computers/subset/basic")
-        let credential = URLCredential(user: credentials.username, password: credentials.password, persistence: URLCredential.Persistence.forSession)
         
-        let protectionSpace = URLProtectionSpace(host: "recbcct.kube.jamf.build", port: 443, protocol: "https", realm: "Restricted", authenticationMethod: NSURLAuthenticationMethodHTTPBasic)
-        URLCredentialStorage.shared.setDefaultCredential(credential, for: protectionSpace)
+        let myURL = NSURL(string: "https://recbcct.kube.jamf.build/JSSResource/computers/subset/basic")
+        let request = NSMutableURLRequest(url: myURL! as URL)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("Basic YWRtaW46amFtZjEyMzQ=", forHTTPHeaderField: "Authorization")
         
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
         
-        dataTask = session.dataTask(with: mobileDeviceUrl!) { data, response, error in
+         let task = URLSession.shared.dataTask(with: request as URLRequest) { data, response, error in
             defer { self.dataTask = nil }
             if let error = error {
                 self.errorMessage += "DataTask error: " + error.localizedDescription + "\n"
@@ -44,7 +43,7 @@ class RequestService {
                 }
             }
         }
-        dataTask?.resume()
+        task.resume()
     }
     
     fileprivate func updateRequestResults(_ data: Data) {

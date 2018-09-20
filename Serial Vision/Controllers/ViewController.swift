@@ -30,7 +30,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
         super.viewDidLoad()
         
         //Load Jamf Pro inventory
-//        self.getMobileDeviceRecords()
+        self.getMobileDeviceRecords()
         
         self.captureSession = AVCaptureSession()
         if UIDevice.current.userInterfaceIdiom == .phone {

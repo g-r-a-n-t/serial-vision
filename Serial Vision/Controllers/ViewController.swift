@@ -32,7 +32,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
         self.resultLabel.textColor = UIColor.lightGray
         
         //Load Jamf Pro inventory
-//        self.getMobileDeviceRecords()
+        self.getMobileDeviceRecords()
         
         self.captureSession = AVCaptureSession()
         if UIDevice.current.userInterfaceIdiom == .phone {

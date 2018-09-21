@@ -155,7 +155,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
         // Pass the selected object to the new view controller.
         if let navController = segue.destination as? UINavigationController, segue.identifier == "foundSerialSegue" {
             // Nested so we can get it to run in a different order for shortcircuting
-            if let controller = navController.topViewController as? ComputerController {
+            if let controller = navController.topViewController as? ComputerInfoViewController {
                 controller.serialNumber = self.serialNumber
                 controller.allowDismiss()
             }

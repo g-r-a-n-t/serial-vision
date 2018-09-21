@@ -7,18 +7,16 @@ Serial Vision is a smart app capable of detecting serial numbers on a device usi
 - Problem statement, proposed solution, overview of what you have built during the hackathon
 
 ## Technical Implementation
-There are three main components to this app. The first is text detection, by this we mean detecting where characters are inside of an image. The second part is classifying the identified characters, this step provides us with probability distributions for each identified character. The third step is taking these probability distributions and inferring what serial number is contained in the image.
+There are three main components to this app. The first is text detection, by this we mean detecting where characters are inside of an image. The second part is classifying the detected characters, this step provides us with probability distributions for each identified character. The third step is taking these probability distributions and determining what serial number is contained inside of the image.
 
 ### Text Detection
-Apple's general purpose language, Swift, contains a library named Vision. This library contains useful image analysis functionality. We used the text detection toolset to find the pixel bounds of each character, which was then used to isolate the characters for classification
+Apple's general purpose language, Swift, contains a visual analysis library called Vision. We used the text detection toolset in this library to find the bounds and position of each character contained within the images being processed. This information was then used to generate input for our character classification model.
 
-For example, say we are given this image of a MacBook Pro. The serial number is `CO2T83GXGTFM` as seen on the bottom right. Running the text detection query in vision will provide us with the bounds for each `word` and `character` in the image. `Words` refers to a group of `characters`. You can see that the serial number is grouped along with some other characters.
+Below is an example of Vision detecting character bounds inside an image. This image contains a MacBook Pro, the serial number is `CO2T83GXGTFM` as seen on the bottom right. Running the text detection query in vision will provide us with the bounds for each `word` and `character` in the image. `Words` refers to a group of `characters`. You can see that the serial number is grouped along with some other characters.
 
 | Original  | Bounded  |
 | --------- | -------- |
 | ![MacBook Pro](https://raw.githubusercontent.com/g-r-a-n-t/serial-vision/master/images/serial.png) | ![MacBook Pro Bounded](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/serial-bounded.png) |
-
-
 
 ### Text classification
 
@@ -26,7 +24,7 @@ After finding the bounds of each character, we crop them out and run some prepro
 
 ![Characters](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/characters.png)
 
-We will now run these images through our CoreMl Model, which we will go into more detail about later. The result of each serial number character classification is below.
+We can now run these images through our CoreML Model, which we will talk about more later. The result of each character classification within the serial number is below. This map structure represents the level of confidence our model has in classifying each character. For example our model is 8% sure that the first character in our serial is a "0", 8% its an "O", 4% sure it's an "L", and 50% sure it's a "C". It has guessed correctly in this case, as 50% is its highest confidence.
 
 ```
 ["0": 0.0750194564461708, "O": 0.08124776929616928, "L": 0.038230523467063904, "C": 0.5053677558898926]
@@ -43,13 +41,13 @@ We will now run these images through our CoreMl Model, which we will go into mor
 ["H": 0.05983928591012955, "M": 0.6266825795173645, "V": 0.10437410324811935, "U": 0.08249279856681824]
 ```
 
-For difficult to read images like this, it's more likely that the probability distribution will be spread out, which could result in the most likely sequence of characters not being a serial number in Jamf Pro. To handle this, we must design an algorithm that checks multiple likely characters in the probability distribution.
+For difficult to read images like this, the probability distribution will be more diffused, which could result in the most likely sequence of characters resembling a serial number, not being correct. To handle this, we must design an algorithm that checks multiple serials within the probability distribution and selects the one that is most likely to be in the image, while still running quickly.
 
 ### Serial Identification
 
-The number of possible serials that could exist in each 12 character sequence given that we are checking the top 4 most likely characters is `4^12 = 16777216`. If we were to do this for every 12 character sequences in the entire image, we would find a large set of possible serial numbers and their probabilities. From this, we could take the most likely sequence of 12 characters resembling a serial number and use that. A naive implementation of this would be slow and optimization would be tedious, so it is not really an option for us.
+The number of possible serials that could exist in a 12 character sequence given that we are checking the top 4 most likely characters is `4^12 = 16777216`. If we generated each possible sequence, we could take the most likely one resembling a serial number and use that. This could be useful under some circumstances and variations of this could be somewhat quick, but it is not necessary in this project. For this, we are only trying to find a serial that exists in Jamf Pro.
 
-To make this simpler and faster, lets use the information we can obtain from Jamf Pro. Given all of the serial numbers within Jamf Pro, we can construct a hash table that will help us prune invalid sequences as we go through the probability distributions. For example, if we had the serial numbers `CO2T83GXGTFM` and `CO2T34FYVSTG` in our Jamf Pro server, we would build a hash table that contains these values.
+To make this faster, let's make a simple change that leverages known data. Given all of the serial numbers within Jamf Pro, we can construct a hash table for pruning invalid sequences as we go through the classification results. For example, if we had the serial numbers `CO2T83GXGTFM` and `CO2T34FYVSTG` in our Jamf Pro server, we would build a hash table that contains these values.
 
 ```
 C
@@ -72,23 +70,23 @@ CO2T34FYVS
 CO2T34FYVST
 CO2T34FYVSTG
 ```
-Now when our algorithm is generating combinations, at each step it will only consider sequences that could exist in Jamf Pro. This makes it many times faster with its minimum complexity being `linear` and it maximum complexity being `polynomial`. Even with a very large Jamf Pro server the complexity tends towards linear.
+Now when our algorithm is generating combinations, it will only consider sequences that could exist in Jamf Pro. This makes it many times faster. With a minimum complexity of `linear` and a maximum complexity of `polynomial`, it can identify the correct serial out of thousands in less than a second.
 
 ## Classification Model
 
 ### Data Collection
-Collecting a dataset for this project within the given timeframe seemed at first like it would be a difficult task, however, we were able to collect everything we needed within a single afternoon.
-
-For this project, we needed a large number of 28x28 greyscale images, roughly 4000. In order to gather this information we first created a document including roughly 800 characters, each row containing a full alphanumeric set. We then took pictures of this document using our phones and ran them through the preprocessing code used in our app.
+For this project, we needed a large(thousands) number of 28x28 greyscale images. In order to gather this information we first created a document including roughly 800 characters, each row containing a full alphanumeric set. We then took pictures of this document using our phones and ran them through the preprocessing code used in our app.
 
 | *Images used to construct our dataset* |                 |
 | ---------------------------------------| --------------- |
 |  ![Document1](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/document1.jpeg) | ![Document2](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/document2.jpeg) |
 | ![Document3](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/document3.jpeg) | ![Document4](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/document4.jpeg) |
 
-After processing each character, the results were dumped into a single directory. We then sorted though these dumps, looking for missing or extra images. Opening the finder window to display 12 thumbnails in a row made this task pretty easy, since a change in the sequence of each 36 characters was easy to detect. Upon detection of an anomaly, the extra image would be deleted or the missing character would be removed from or classification mapping file.
+After processing each character, the results were dumped into a single directory. We then sorted though these dumps, looking for missing or extra images. Configuring the finder window to display 12 (`36 % 12 = 0`) thumbnails in a row made this task pretty easy. Since they were in alphabetical order, a change in sequence was easy to detect with the eye. Upon detection of an anomaly, the extra image would be deleted or the missing character would be removed from or classification mapping file.
 
 ![Training Data](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/training-data.png)
+
+*sample of training data*
 
 After manually processing each picture, we combined the data into one set containing 3200 images. This was plenty enough to meet our needs.
 
@@ -99,7 +97,7 @@ The feature learning section of our model consists of two consecutive `Conv2D` l
 
 ### Performance
 
-The model was trained on 2400 images and validated on 800 images with a batch size of 128 inputs over 6 epochs. Training time takes under a minute and the accuracy is consistently above 98% on test data.
+The model was trained on 2400 images and validated on 800 images with a batch size of 128 inputs over 6 epochs. Training takes under a minute and the accuracy is consistently above 98% on test data.
 
 ![Performance](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/performance.png)
 

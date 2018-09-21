@@ -21,5 +21,8 @@ extension CoreComputer {
     @NSManaged public var deviceName: String?
     @NSManaged public var serialNumber: String
     @NSManaged public var username: String?
+    @NSManaged public var building: String?
+    @NSManaged public var department: String?
+    @NSManaged public var managed: Bool
 
 }

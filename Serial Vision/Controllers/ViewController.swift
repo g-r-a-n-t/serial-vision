@@ -37,15 +37,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
     
     private var captureSession: AVCaptureSession?
     
-    func initilizeResultLabel() {
-        self.resultLabel.text = "Hold Camera to Serial #"
-        self.resultLabel.textColor = UIColor.lightGray
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
     
-        self.initilizeResultLabel()
         self.getJamfInventory()
         
         self.captureSession = AVCaptureSession()
@@ -108,13 +102,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.resultLabel.text = "Hold Camera to Serial #"
+        self.resultLabel.textColor = UIColor.lightGray
         self.captureSession?.startRunning()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        self.initilizeResultLabel()
         self.captureSession?.stopRunning()
     }
     

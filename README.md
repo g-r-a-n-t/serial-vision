@@ -85,16 +85,25 @@ For this project, we needed a large number of 28x28 greyscale images, roughly 40
 | ---------------- | --------------- |
 |  ![Document1](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/document1.jpeg) | ![Document2](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/document2.jpeg) |
 | ![Document3](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/document3.jpeg) | ![Document4](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/document4.jpeg) |
+
 *Images used to build our dataset*
 
 After processing each character, the results were dumped into a single directory. We then sorted though these dumps, looking for missing or extra images. Opening the finder window to display 12 thumbnails in a row made this task pretty easy, since a change in the sequence of each 36 characters was easy to detect. Upon detection of an anomaly, the extra image would be deleted or the missing character would be removed from or classification mapping file.
 
 ![Training Data](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/training-data.png)
 
-### Design
+After manually processing each picture, we combined the data into one set containing 3200 images. This was plenty enough to meet our needs.
 
+### Design
+We used the Python library Keres, to implement our training model. Keras is a high level API for ML development that makes working with neural networks much easier. Seeing as our model is fairly standard, this was perfect for us.
+
+... more here
 
 ### Performance
+
+The model was trained on 2400 images and validated on 800 images with a batch size of 128 over 6 epochs. Training time take under a minute and the result accuracy is consistently 98+% accurate.
+
+![Performance](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/performance.png)
 
 ## Analysis
 - what was learned

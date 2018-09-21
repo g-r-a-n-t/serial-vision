@@ -4,6 +4,7 @@ import UIKit
 import Vision
 import AVKit
 
+// No public modifiers on this extention functions because we don't want these to leak outside of our package
 extension UIImage {
     convenience init?(sampleBuffer: CMSampleBuffer) {
         guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {

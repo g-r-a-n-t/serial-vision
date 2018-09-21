@@ -26,6 +26,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
     var serialNumber: String? {
         didSet {
             self.resultLabel.text = self.serialNumber
+            // If we've seen this serial number update the history else create one
+            if let history = CoreHistory.get(serial: self.serialNumber!) {
+                history.date = Date() as NSDate
+            } else {
+                _ = CoreHistory(serialNumber: self.serialNumber!)
+            }
         }
     }
     
@@ -128,7 +134,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
     // MARK: - IBActions
     @IBAction func tapOnSerialNumber(_ sender: Any) {
         if self.serialNumber != nil {
-            self.performSegue(withIdentifier: "FoundSerialSegue", sender: self)
+            self.performSegue(withIdentifier: "foundSerialSegue", sender: self)
         }
     }
     
@@ -149,11 +155,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
-        if let navController = segue.destination as? UINavigationController,
-            let controller = navController.topViewController as? ComputerController,
-            segue.identifier == "FoundSerialSegue" {
-            controller.serialNumber = self.serialNumber
-            controller.allowDismiss()
+        if let navController = segue.destination as? UINavigationController, segue.identifier == "foundSerialSegue" {
+            // Nested so we can get it to run in a different order for shortcircuting
+            if let controller = navController.topViewController as? ComputerController {
+                controller.serialNumber = self.serialNumber
+                controller.allowDismiss()
+            }
         }
     }
 }

@@ -11,16 +11,17 @@ import UIKit
 import Vision
 import CoreML
 
+// Public private modifiers on this class cause it could be an exported type
 class ImageReader {
-    var model: VNCoreMLModel!
-    var classificationResults: [[String: Double]]
+    private var model: VNCoreMLModel!
+    private var classificationResults: [[String: Double]]
     
     init() {
         model = try? VNCoreMLModel(for: OCR().model)
         classificationResults = [[:]]
     }
     
-    func classifyBoundedCharacters(image: UIImage, distributionSize: Int, callback: @escaping ([[String: Double]]) -> ()) {
+    public func classifyBoundedCharacters(image: UIImage, distributionSize: Int, callback: @escaping ([[String: Double]]) -> ()) {
         print("image detection", NSDate().timeIntervalSince1970)
         let convertedImage = image.convertToGrayscale()
         print("orientation1", image.imageOrientation.rawValue)

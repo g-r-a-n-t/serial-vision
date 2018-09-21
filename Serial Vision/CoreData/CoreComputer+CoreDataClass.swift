@@ -62,9 +62,12 @@ public class CoreComputer: NSManagedObject {
     }
     
     static func deleteAll() {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let moc: NSManagedObjectContext = appDelegate.persistentContainer.viewContext
-        self.get(from: nil).forEach(moc.delete)
+        // Whatever you do don't async this keep it sync
+        DispatchQueue.main.sync {
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            let moc: NSManagedObjectContext = appDelegate.persistentContainer.viewContext
+            self.get(from: nil).forEach(moc.delete)
+        }
     }
     
     convenience init(id: Int, deviceName: String, serialNumber: String, username: String) {

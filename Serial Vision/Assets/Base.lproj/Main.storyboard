@@ -68,7 +68,7 @@
                     <connections>
                         <outlet property="imageView" destination="db5-50-M4f" id="FZI-Za-SSX"/>
                         <outlet property="resultLabel" destination="bjM-jt-gk8" id="Bvl-Vz-hr8"/>
-                        <segue destination="N1D-fJ-bgL" kind="show" identifier="FoundSerialSegue" id="q9b-Oc-zhx"/>
+                        <segue destination="N1D-fJ-bgL" kind="show" identifier="foundSerialSegue" id="q9b-Oc-zhx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -183,6 +183,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="nhq-Uu-AJE"/>
+        <segue reference="hgM-49-b9l"/>
     </inferredMetricsTieBreakers>
 </document>

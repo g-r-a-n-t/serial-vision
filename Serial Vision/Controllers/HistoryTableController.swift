@@ -68,7 +68,7 @@ class HistoryTableController: UITableViewController {
         if let indexPath = self.tableView.indexPathForSelectedRow {
             let history = CoreHistory.get(from: nil)[indexPath.item]
             
-            if let controller = segue.destination as? ComputerController {
+            if let controller = segue.destination as? ComputerInfoViewController {
                 controller.serialNumber = history.serialNumber
             }
         }

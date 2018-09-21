@@ -1,16 +1,16 @@
 # Serial Vision
 
-Serial Vision is a smart app capable of detecting serial numbers on a device using live camera feed. It integrates with Jamf Pro so users can more easily manage devices on the go.
+Serial Vision is a smart app capable of detecting serial numbers on an Apple device using live camera feed. It integrates with [Jamf Pro](https://www.jamf.com) so IT administrators can easily manage devices on the go.
 
 ## App Usage
 - pictures
 - Problem statement, proposed solution, overview of what you have built during the hackathon
 
 ## Technical Implementation
-There are three main components to this app. The first is text detection, by this we mean detecting where characters are inside of an image. The second part is classifying the detected characters, this step provides us with probability distributions for each identified character. The third step is taking these probability distributions and determining what serial number is contained inside of the image.
+There are three main components to this app. The first is **text detection** - by this we mean detecting where characters are inside of an image. The second part is **character classification** of the detected characters. This step provides us with probability distributions for each identified character. The third step is **serial number determination** - taking the probability distributions and determining what serial number is contained in the image.
 
 ### Text Detection
-Apple's general purpose language, Swift, contains a visual analysis library called Vision. We used the text detection toolset in this library to find the bounds and position of each character contained within the images being processed. This information was then used to generate input for our character classification model.
+Apple's general purpose language, Swift, contains a visual analysis library called [Vision](https://developer.apple.com/documentation/vision). We used the text detection toolset in this library to find the bounds and position of each character contained within the images being processed. This information was then used to generate input for our character classification model.
 
 Below is an example of Vision detecting character bounds inside an image. This image contains a MacBook Pro, the serial number is `CO2T83GXGTFM` as seen on the bottom right. Running the text detection query in vision will provide us with the bounds for each `word` and `character` in the image. `Words` refers to a group of `characters`. You can see that the serial number is grouped along with some other characters.
 
@@ -20,11 +20,11 @@ Below is an example of Vision detecting character bounds inside an image. This i
 
 ### Text classification
 
-After finding the bounds of each character, we crop them out and run some preprocessing. The model requires 28x28 greyscale images, so we must resize and adjust the colors. A handful of the resulting images are below, the serial number is boxed in red.
+After finding the bounds of each character, we crop them out and run some preprocessing. The model requires 28x28 pixel greyscale images, so we must resize and adjust the colors. A handful of the resulting images are below, the serial number is boxed in red.
 
 ![Characters](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/characters.png)
 
-We can now run these images through our CoreML Model, which we will talk about more later. The result of each character classification within the serial number is below. This map structure represents the level of confidence our model has in classifying each character. For example our model is 8% sure that the first character in our serial is a "0", 8% its an "O", 4% sure it's an "L", and 50% sure it's a "C". It has guessed correctly in this case, as 50% is its highest confidence.
+We can now run these images through our Core ML Model, which we will talk about more later. The result of each character classification within the serial number is below. This map structure represents the level of confidence our model has in classifying each character. For example our model is 8% sure that the first character in our serial is a "0", 8% its an "O", 4% sure it's an "L", and 50% sure it's a "C". It has guessed correctly in this case, as 50% is its highest confidence.
 
 ```
 ["0": 0.0750194564461708, "O": 0.08124776929616928, "L": 0.038230523467063904, "C": 0.5053677558898926]
@@ -47,7 +47,7 @@ For difficult to read images like this, the probability distribution will be mor
 
 The number of possible serials that could exist in a 12 character sequence given that we are checking the top 4 most likely characters is `4^12 = 16777216`. If we generated each possible sequence, we could take the most likely one resembling a serial number and use that. This could be useful under some circumstances and variations of this could be somewhat quick, but it is not necessary in this project. For this, we are only trying to find a serial that exists in Jamf Pro.
 
-To make this faster, let's make a simple change that leverages known data. Given all of the serial numbers within Jamf Pro, we can construct a hash table for pruning invalid sequences as we go through the classification results. For example, if we had the serial numbers `CO2T83GXGTFM` and `CO2T34FYVSTG` in our Jamf Pro server, we would build a hash table that contains these values.
+To make this faster, let's make a simple change that leverages known data. Given all of the serial numbers within Jamf Pro (acquired via the [Jamf Pro REST API](https://developer.jamf.com/apis)), we can construct a hash table for pruning invalid sequences as we go through the classification results. For example, if we had the serial numbers `CO2T83GXGTFM` and `CO2T34FYVSTG` in our Jamf Pro server, we would build a hash table that contains these values.
 
 ```
 C
@@ -75,29 +75,29 @@ Now when our algorithm is generating combinations, it will only consider sequenc
 ## Classification Model
 
 ### Data Collection
-For this project, we needed a large(thousands) number of 28x28 greyscale images. In order to gather this information we first created a document including roughly 800 characters, each row containing a full alphanumeric set. We then took pictures of this document using our phones and ran them through the preprocessing code used in our app.
+For this project, we needed a large number (in the thousands) of 28x28 pixel greyscale images. In order to gather this information we first created a document including roughly 800 characters, each row containing a full alphanumeric set. We then took pictures of this document using our phones and ran them through the Vision preprocessing code used in our app.
 
 | *Images used to construct our dataset* |                 |
 | ---------------------------------------| --------------- |
 |  ![Document1](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/document1.jpeg) | ![Document2](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/document2.jpeg) |
 | ![Document3](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/document3.jpeg) | ![Document4](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/document4.jpeg) |
 
-After processing each character, the results were dumped into a single directory. We then sorted though these dumps, looking for missing or extra images. Configuring the finder window to display 12 (`36 % 12 = 0`) thumbnails in a row made this task pretty easy. Since they were in alphabetical order, a change in sequence was easy to detect with the eye. Upon detection of an anomaly, the extra image would be deleted or the missing character would be removed from or classification mapping file.
+After processing each character, the results were dumped into a single directory. We then sorted though these dumps, looking for missing or extra images. Configuring the Finder window to display 12 (`36 % 12 = 0`) thumbnails in a row made this task pretty easy. Since they were in alphabetical order, a change in sequence was easy to detect with the eye. Upon detection of an anomaly, the extra image would be deleted or the missing character would be removed from or classification mapping file.
 
 ![Training Data](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/training-data.png)
 
-*sample of training data*
+*Sample of our training data*
 
-After manually processing each picture, we combined the data into one set containing 3200 images. This was plenty enough to meet our needs.
+After manually processing each picture, we combined the data into one set containing 3,200 images. This was plenty enough to meet our needs.
 
 ### Design
-We used the Python library Keres to help create and train our model. Keras is a high level API for ML development. Tensorflow was used by Keras to train our model in the background. The resulting model was then converted to a CoreML file and added to our iOS project.
+We used the Python library [Keras](https://keras.io) to help create and train our model. Keras is a high level API for ML development. Keras used Tensorflow under the hood to train our model. The resulting model was then converted to Apple's [Core ML](https://developer.apple.com/machine-learning) format and added to our iOS app project.
 
 ![Model](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/model.png)
 
 *Our model as defined in Keras*
 
-We used a fairly standard design, in fact, this model had already been used by another developer to classify characters of a different front. That code can be found here.
+We used a fairly standard design, in fact, this model had already been used by another developer to classify characters of a different font. That code can be found here.
 https://github.com/DrNeuroSurg/OCRwithVisionAndCoreML-Part1
 
 ![CNN Example](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/cnn-example.png)
@@ -106,7 +106,7 @@ https://github.com/DrNeuroSurg/OCRwithVisionAndCoreML-Part1
 
 ### Performance
 
-The model was trained on 2400 images and validated on 800 images with a batch size of 128 inputs over 6 epochs. Training takes under a minute and the accuracy is consistently above 98% on test data.
+The model was trained on 2,400 images and validated on 800 images with a batch size of 128 inputs over 6 epochs. Training takes under a minute and the accuracy is consistently above 98% on test data.
 
 ![Performance](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/performance.png)
 

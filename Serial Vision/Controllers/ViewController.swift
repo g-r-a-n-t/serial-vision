@@ -33,6 +33,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
             } else {
                 _ = CoreHistory(serialNumber: self.serialNumber!)
             }
+            AppDelegate.main.historyView?.tableView.reloadData()
         }
     }
     

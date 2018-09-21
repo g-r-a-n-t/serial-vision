@@ -21,19 +21,12 @@ class ComputerInfoViewController: UITableViewController {
     var serialNumber: String! {
         didSet {
             self.computer = CoreComputer.get(serial: self.serialNumber)
+            print("\(self.serialNumber ?? "nil") : \(String(describing: self.computer))")
         }
     }
     var computer: CoreComputer! {
         didSet {
-            guard self.computer != nil else { return }
-            
-            self.serialNumberLabel.text = self.serialNumber
-            
-            self.usernameField.text = self.computer.username
-            self.deviceNameLabel.text = self.computer.deviceName
-            self.buildingNameLabel.text = self.computer.building
-            self.departmentNameLabel.text = self.computer.department
-            self.managedLabel.text = self.computer.managed ? "Yes" : "No"
+            self.updateView()
         }
     }
     
@@ -53,7 +46,21 @@ class ComputerInfoViewController: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print(self.serialNumber)
+        super.viewWillAppear(animated)
+        
+        self.updateView()
+    }
+    
+    func updateView() {
+        guard self.computer != nil, self.isViewLoaded else { return }
+        
+        self.serialNumberLabel.text = self.serialNumber
+        
+        self.usernameField.text = self.computer.username
+        self.deviceNameLabel.text = self.computer.deviceName
+        self.buildingNameLabel.text = self.computer.building
+        self.departmentNameLabel.text = self.computer.department
+        self.managedLabel.text = self.computer.managed ? "Yes" : "No"
     }
 
     @IBAction func usernameChanged(_ sender: UITextField) {

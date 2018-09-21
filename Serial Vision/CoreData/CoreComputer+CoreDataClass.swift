@@ -15,8 +15,7 @@ public class CoreComputer: NSManagedObject {
     static func get(from predicate: NSPredicate?) -> [CoreComputer] {
         var fetchResults: [CoreComputer] = []
         
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let moc: NSManagedObjectContext = appDelegate.persistentContainer.viewContext
+        let moc: NSManagedObjectContext = AppDelegate.main.persistentContainer.viewContext
         
         let fetchRequest: NSFetchRequest<CoreComputer> = CoreComputer.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
@@ -40,7 +39,7 @@ public class CoreComputer: NSManagedObject {
     }
     
     static func get(serial: String) -> CoreComputer? {
-        let predicate = NSPredicate(format: "serialNumber == %s", serial)
+        let predicate = NSPredicate(format: "serialNumber like %@", serial)
         return self.get(from: predicate).first
     }
     

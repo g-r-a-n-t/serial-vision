@@ -58,7 +58,7 @@ public class CoreHistory: NSManagedObject {
     }
     
     static func get(serial: String) -> CoreHistory? {
-        let predicate = NSPredicate(format: "serialNumber == %s", serial)
+        let predicate = NSPredicate(format: "serialNumber like %@", serial)
         return self.get(from: predicate).first
     }
     

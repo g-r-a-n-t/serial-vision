@@ -44,13 +44,13 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bjM-jt-gk8" customClass="SerialCodeView" customModule="Serial_Vision" customModuleProvider="target">
-                                <rect key="frame" x="166.5" y="559.5" width="42" height="20.5"/>
+                                <rect key="frame" x="160.5" y="547.5" width="54" height="32.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eKw-jz-IKZ">
-                                <rect key="frame" x="166.5" y="555" width="42" height="30"/>
+                                <rect key="frame" x="160.5" y="547.5" width="54" height="32.5"/>
                                 <connections>
                                     <action selector="tapOnSerialNumber:" destination="BYZ-38-t0r" eventType="touchUpInside" id="yUX-pE-ESE"/>
                                 </connections>
@@ -71,6 +71,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <tabBarItem key="tabBarItem" systemItem="search" id="M9W-s9-TFO"/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="imageView" destination="db5-50-M4f" id="FZI-Za-SSX"/>
                         <outlet property="resultLabel" destination="bjM-jt-gk8" id="Bvl-Vz-hr8"/>
@@ -362,7 +363,7 @@
         <scene sceneID="5R8-Jm-Ely">
             <objects>
                 <navigationController id="N1D-fJ-bgL" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="f6I-bf-QJH">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" largeTitles="YES" id="f6I-bf-QJH">
                         <rect key="frame" x="0.0" y="20" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -387,7 +388,7 @@
             <objects>
                 <navigationController id="0GP-vL-Gli" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" systemItem="history" id="XW8-bn-cw3"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="qTV-9t-zGL">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" largeTitles="YES" id="qTV-9t-zGL">
                         <rect key="frame" x="0.0" y="20" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -414,6 +415,6 @@
         </namedColor>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="JTo-XH-aap"/>
+        <segue reference="cqV-Dh-kcM"/>
     </inferredMetricsTieBreakers>
 </document>

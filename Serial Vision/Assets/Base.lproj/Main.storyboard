@@ -150,7 +150,7 @@
         <scene sceneID="Tph-YH-Ek6">
             <objects>
                 <tableViewController id="Orf-He-qJH" customClass="ComputerInfoViewController" customModule="Serial_Vision" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="UrP-49-CUC">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="static" style="grouped" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="UrP-49-CUC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -175,9 +175,9 @@
                                                     <rect key="frame" x="79" y="22.5" width="280" height="32"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                     <connections>
-                                                        <action selector="usernameChanged:" destination="Orf-He-qJH" eventType="valueChanged" id="WfP-wG-a7c"/>
+                                                        <action selector="usernameChanged:" destination="Orf-He-qJH" eventType="editingChanged" id="g2N-Tp-Z7K"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>

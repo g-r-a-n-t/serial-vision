@@ -61,10 +61,19 @@ class ComputerInfoViewController: UITableViewController {
         self.buildingNameLabel.text = self.computer.building
         self.departmentNameLabel.text = self.computer.department
         self.managedLabel.text = self.computer.managed ? "Yes" : "No"
+        
+        self.updateImage()
+    }
+    
+    func updateImage() {
+        if let text = self.usernameField.text {
+            self.userImageView.image = UIImage(named: text)
+        }
     }
 
     @IBAction func usernameChanged(_ sender: UITextField) {
-        print(sender.text ?? "empty")
+        self.computer.username = sender.text
+        self.updateImage()
     }
 
     /*

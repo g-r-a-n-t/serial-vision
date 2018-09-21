@@ -77,16 +77,14 @@ Now when our algorithm is generating combinations, at each step it will only con
 ## Classification Model
 
 ### Data Collection
-Collecting a dataset for this project within the given timeframe seemed at first like it would have been a difficult task, however, we were able to collect everything we needed within an afternoon.
+Collecting a dataset for this project within the given timeframe seemed at first like it would be a difficult task, however, we were able to collect everything we needed within a single afternoon.
 
-For this project, we needed a large number of 28x28 greyscale images, roughly 4000. In order to gather this information we first created a document including roughly 800 characters, each row containing a full alphanumeric set. We then took pictures of this document using our phones and ran them through the same preprocessing used in our app.
+For this project, we needed a large number of 28x28 greyscale images, roughly 4000. In order to gather this information we first created a document including roughly 800 characters, each row containing a full alphanumeric set. We then took pictures of this document using our phones and ran them through the preprocessing code used in our app.
 
-|                  |                 |
-| ---------------- | --------------- |
+| *Images used to construct our dataset* |                 |
+| ---------------------------------------| --------------- |
 |  ![Document1](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/document1.jpeg) | ![Document2](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/document2.jpeg) |
 | ![Document3](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/document3.jpeg) | ![Document4](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/document4.jpeg) |
-
-*Images used to build our dataset*
 
 After processing each character, the results were dumped into a single directory. We then sorted though these dumps, looking for missing or extra images. Opening the finder window to display 12 thumbnails in a row made this task pretty easy, since a change in the sequence of each 36 characters was easy to detect. Upon detection of an anomaly, the extra image would be deleted or the missing character would be removed from or classification mapping file.
 
@@ -95,15 +93,17 @@ After processing each character, the results were dumped into a single directory
 After manually processing each picture, we combined the data into one set containing 3200 images. This was plenty enough to meet our needs.
 
 ### Design
-We used the Python library Keres, to implement our training model. Keras is a high level API for ML development that makes working with neural networks much easier. Seeing as our model is fairly standard, this was perfect for us.
+We used the Python library Keres, to help define and train our model. Keras is a high level API for ML development. Tensorflow was used by Keras to build and train our model in the background. The result of training was then converted to a CoreML file and added to our iOS project.
 
-... more here
+The feature learning section of our model consists of two consecutive `Conv2D` layers, each with kernel sizes of 3, followed by a `MaxPooling2D` layer with a dropout rate of .25. The classification section consists of a `Flatten` layer, a `Dense` layer with a dropout rate of .5, and a `Softmax` classifier. We used ReLU for our activation function. We chose this model because it had been used by others successfully to classify characters.
 
 ### Performance
 
-The model was trained on 2400 images and validated on 800 images with a batch size of 128 over 6 epochs. Training time take under a minute and the result accuracy is consistently 98+% accurate.
+The model was trained on 2400 images and validated on 800 images with a batch size of 128 inputs over 6 epochs. Training time takes under a minute and the accuracy is consistently above 98% on test data.
 
 ![Performance](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/performance.png)
+
+The performance of this model is equally as good on devices. Given that the characters are reasonably clear, the model will often predict with very high confidence the correct value.
 
 ## Analysis
 - what was learned

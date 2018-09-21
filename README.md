@@ -91,10 +91,18 @@ After processing each character, the results were dumped into a single directory
 After manually processing each picture, we combined the data into one set containing 3200 images. This was plenty enough to meet our needs.
 
 ### Design
-We used the Python library Keres to help create and train our model. Keras is a high level API for ML development. Tensorflow was used by Keras to train our model in the background. The result of training was then converted to a CoreML file and added to our iOS project.
+We used the Python library Keres to help create and train our model. Keras is a high level API for ML development. Tensorflow was used by Keras to train our model in the background. The resulting model was then converted to a CoreML file and added to our iOS project.
 
-Our model is defined as such:
 ![Model](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/model.png)
+
+*Our model as defined in Keras*
+
+We used a fairly standard design, in fact, this model had already been used by another developer to classify characters of a different front. That code can be found here.
+https://github.com/DrNeuroSurg/OCRwithVisionAndCoreML-Part1
+
+![CNN Example](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/cnn-example.png)
+
+*A nice CNN diagram (not ours, it's from Wikipedia)*
 
 ### Performance
 

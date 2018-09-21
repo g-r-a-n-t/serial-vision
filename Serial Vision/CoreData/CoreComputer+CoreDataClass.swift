@@ -65,14 +65,12 @@ public class CoreComputer: NSManagedObject {
         self.get(from: nil).forEach(moc.delete)
     }
     
-    convenience init(id: Int, deviceName: String, serialNumber: String, username: String) {
+    convenience init(id: Int, serialNumber: String) {
         let moc: NSManagedObjectContext = AppDelegate.main.persistentContainer.viewContext
         
         self.init(context: moc)
         
         self.id = Int64(id)
-        self.deviceName = deviceName
         self.serialNumber = serialNumber
-        self.username = username
     }
 }

@@ -106,13 +106,17 @@ class RequestService {
             for deviceRecords in array {
                 if let deviceRecords = deviceRecords as? JSONDictionary,
                     let id = deviceRecords["id"] as? Int,
-                    let deviceName = deviceRecords["name"] as? String,
-                    let serialNumber = deviceRecords["serial_number"] as? String,
-                    let username = deviceRecords["username"] as? String {
+                    let serialNumber = deviceRecords["serial_number"] as? String {
                     
                     print("*** Storing serial number: ", serialNumber)
                     
-                    _ = CoreComputer(id: id, deviceName: deviceName, serialNumber: serialNumber, username: username)
+                    let computer = CoreComputer(id: id, serialNumber: serialNumber)
+                    
+                    computer.username = deviceRecords["username"] as? String
+                    computer.deviceName = deviceRecords["name"] as? String
+                    computer.department = deviceRecords["department"] as? String
+                    computer.building = deviceRecords["building"] as? String
+                    
                 } else {
                     errorMessage += "Problem parsing trackDictionary\n"
                 }

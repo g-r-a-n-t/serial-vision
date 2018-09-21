@@ -30,6 +30,13 @@ class ComputerInfoViewController: UITableViewController {
         }
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        DispatchQueue.global(qos: .background).async {
+            // Update the jamf pro database
+            <#code#>
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

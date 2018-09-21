@@ -53,12 +53,8 @@ public class CoreHistory: NSManagedObject {
     
     // should not call cause this will clear all history
     static func deleteAll() {
-        // Whatever you do don't async this keep it sync
-        DispatchQueue.main.sync {
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            let moc: NSManagedObjectContext = appDelegate.persistentContainer.viewContext
-            self.get(from: nil).forEach(moc.delete)
-        }
+        let moc: NSManagedObjectContext = AppDelegate.main.persistentContainer.viewContext
+        self.get(from: nil).forEach(moc.delete)
     }
     
     static func get(serial: String) -> CoreHistory? {
@@ -67,8 +63,7 @@ public class CoreHistory: NSManagedObject {
     }
     
     convenience init(serialNumber: String) {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let moc: NSManagedObjectContext = appDelegate.persistentContainer.viewContext
+        let moc: NSManagedObjectContext = AppDelegate.main.persistentContainer.viewContext
         
         self.init(context: moc)
         

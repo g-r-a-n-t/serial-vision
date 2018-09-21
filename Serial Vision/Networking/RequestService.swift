@@ -46,8 +46,12 @@ class RequestService {
     }
     
     fileprivate func updateRequestResults(_ data: Data) {
+        // Sync with the main thread for CoreData modification
+        DispatchQueue.main.sync {
+            CoreComputer.deleteAll()
+        }
+        
         var response: JSONDictionary?
-        CoreComputer.deleteAll()
         
         do {
             response = try JSONSerialization.jsonObject(with: data, options: []) as? JSONDictionary
@@ -61,18 +65,20 @@ class RequestService {
             return
         }
         
-        for deviceRecords in array {
-            if let deviceRecords = deviceRecords as? JSONDictionary,
-                let id = deviceRecords["id"] as? Int,
-                let deviceName = deviceRecords["name"] as? String,
-                let serialNumber = deviceRecords["serial_number"] as? String,
-                let username = deviceRecords["username"] as? String {
-                
-                print("*** Storing serial number: ", serialNumber)
-                
-                _ = CoreComputer(id: id, deviceName: deviceName, serialNumber: serialNumber, username: username)
-            } else {
-                errorMessage += "Problem parsing trackDictionary\n"
+        DispatchQueue.main.sync {
+            for deviceRecords in array {
+                if let deviceRecords = deviceRecords as? JSONDictionary,
+                    let id = deviceRecords["id"] as? Int,
+                    let deviceName = deviceRecords["name"] as? String,
+                    let serialNumber = deviceRecords["serial_number"] as? String,
+                    let username = deviceRecords["username"] as? String {
+                    
+                    print("*** Storing serial number: ", serialNumber)
+                    
+                    _ = CoreComputer(id: id, deviceName: deviceName, serialNumber: serialNumber, username: username)
+                } else {
+                    errorMessage += "Problem parsing trackDictionary\n"
+                }
             }
         }
     }

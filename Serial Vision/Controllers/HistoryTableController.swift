@@ -35,16 +35,7 @@ class HistoryTableController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "serialCell", for: indexPath) as! HistoryCell
 
-        let history = CoreHistory.get(from: nil)[indexPath.item]
-        let computer = CoreComputer.get(serial: history.serialNumber)
-        
-        cell.deviceName.text = computer?.deviceName
-        cell.serialNumber.text = history.serialNumber
-        
-//        cell.textLabel?.text = history.code
-//        if let date = history.date as Date? {
-//            cell.detailTextLabel?.text = DateFormatter.localizedString(from: date, dateStyle: .none, timeStyle: .short)
-//        }
+        cell.history = CoreHistory.get(from: nil)[indexPath.item]
 
         return cell
     }

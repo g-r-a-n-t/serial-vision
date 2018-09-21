@@ -10,8 +10,22 @@ import UIKit
 
 class HistoryCell: UITableViewCell {
 
-    @IBOutlet weak var deviceName: UILabel!
-    @IBOutlet weak var serialNumber: UILabel!
+    @IBOutlet weak var deviceName: UILabel?
+    @IBOutlet weak var serialNumber: UILabel?
+    @IBOutlet weak var dateLabel: UILabel?
+    
+    var history: CoreHistory! {
+        didSet {
+            let computer = CoreComputer.get(serial: history.serialNumber)
+            
+            self.deviceName?.text = computer?.deviceName
+            self.serialNumber?.text = history.serialNumber
+            
+            if let date = history.date as Date? {
+                self.dateLabel?.text = DateFormatter.localizedString(from: date, dateStyle: .none, timeStyle: .short)
+            }
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()

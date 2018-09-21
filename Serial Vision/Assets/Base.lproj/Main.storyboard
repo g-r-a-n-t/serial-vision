@@ -91,27 +91,39 @@
                                     <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Device Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x2g-4l-dzp">
-                                            <rect key="frame" x="16" y="11" width="102" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="8RM-ok-gAB">
+                                            <rect key="frame" x="16" y="4.5" width="102" height="35"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Device Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x2g-4l-dzp">
+                                                    <rect key="frame" x="0.0" y="0.0" width="102" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZoH-G7-4Dg">
+                                                    <rect key="frame" x="0.0" y="20.5" width="61" height="14.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </stackView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Serial Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ciA-6W-zhQ">
-                                            <rect key="frame" x="224" y="11" width="109" height="21"/>
+                                            <rect key="frame" x="223" y="11.5" width="109" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="ciA-6W-zhQ" firstAttribute="top" secondItem="a3N-7Z-DGg" secondAttribute="topMargin" id="BqJ-CT-Kqn"/>
-                                        <constraint firstItem="x2g-4l-dzp" firstAttribute="top" secondItem="a3N-7Z-DGg" secondAttribute="topMargin" id="Brv-lH-WoR"/>
-                                        <constraint firstItem="x2g-4l-dzp" firstAttribute="leading" secondItem="a3N-7Z-DGg" secondAttribute="leadingMargin" id="Gfc-rh-Amz"/>
-                                        <constraint firstItem="ciA-6W-zhQ" firstAttribute="trailing" secondItem="a3N-7Z-DGg" secondAttribute="trailingMargin" id="rho-QH-0g4"/>
+                                        <constraint firstItem="8RM-ok-gAB" firstAttribute="leading" secondItem="a3N-7Z-DGg" secondAttribute="leading" constant="16" id="0uQ-sX-Bzm"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="ciA-6W-zhQ" secondAttribute="trailing" constant="1" id="5Pw-XM-X93"/>
+                                        <constraint firstItem="ciA-6W-zhQ" firstAttribute="centerY" secondItem="a3N-7Z-DGg" secondAttribute="centerY" id="hRL-fF-EDB"/>
+                                        <constraint firstItem="8RM-ok-gAB" firstAttribute="centerY" secondItem="a3N-7Z-DGg" secondAttribute="centerY" id="tjS-X2-iUg"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="dateLabel" destination="ZoH-G7-4Dg" id="sxf-7C-IVY"/>
                                     <outlet property="deviceName" destination="x2g-4l-dzp" id="1nu-Yy-URy"/>
                                     <outlet property="serialNumber" destination="ciA-6W-zhQ" id="fcn-DB-45U"/>
                                     <segue destination="kCj-cC-SnF" kind="show" id="nhq-Uu-AJE"/>
@@ -183,6 +195,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="hgM-49-b9l"/>
+        <segue reference="nhq-Uu-AJE"/>
     </inferredMetricsTieBreakers>
 </document>

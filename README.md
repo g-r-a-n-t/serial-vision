@@ -14,11 +14,11 @@ Apple's general purpose language, Swift, contains a library named Vision. This l
 
 For example, say we are given this image of a MacBook Pro. The serial number is `CO2T83GXGTFM` as seen on the bottom right.
 
-![MacBook Pro](https://raw.githubusercontent.com/g-r-a-n-t/serial-vision/master/images/serial.png)
+Original  | Bounded
+        - | -
+![MacBook Pro](https://raw.githubusercontent.com/g-r-a-n-t/serial-vision/master/images/serial.png) | ![MacBook Pro Bounded](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/serial-bounded.png)
 
 Running the text detection query in vision will provide us with the bounds for each `word` and `character` in the image. `Words` refers to a group of `characters`. You can see that the serial number is grouped along with some other characters.
-
-![MacBook Pro Bounded](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/serial-bounded.png)
 
 ### Text classification
 
@@ -75,9 +75,16 @@ CO2T34FYVSTG
 Now when our algorithm is generating combinations, at each step it will only consider sequences that could exist in Jamf Pro. This makes it many times faster with its minimum complexity being `linear` and it maximum complexity being `polynomial`. Even with a very large Jamf Pro server the complexity tends towards linear.
 
 ## Classification Model
-- data collection
-- model description
-- model performance
+
+### Data Collection
+Collecting a dataset for this project within the given timeframe seemed at first like it should have been a difficult task, however, we were able to collect everything we needed within an afternoon.
+
+For this project, we needed a large number of 28x28 greyscale images, roughly 4000. In order to gather this information we first created a document including roughly 800 characters, each row containing a full alphanumeric set. We then took pictures of this document using our phones and ran them through the same preprocessing used in our app.
+
+### Design
+
+
+### Performance
 
 ## Analysis
 - what was learned

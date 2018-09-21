@@ -14,9 +14,9 @@ Apple's general purpose language, Swift, contains a library named Vision. This l
 
 For example, say we are given this image of a MacBook Pro. The serial number is `CO2T83GXGTFM` as seen on the bottom right.
 
-Original  | Bounded
-      --- | ---
-![MacBook Pro](https://raw.githubusercontent.com/g-r-a-n-t/serial-vision/master/images/serial.png) | ![MacBook Pro Bounded](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/serial-bounded.png)
+| Original  | Bounded  |
+| --------- | -------- |
+| ![MacBook Pro](https://raw.githubusercontent.com/g-r-a-n-t/serial-vision/master/images/serial.png) | ![MacBook Pro Bounded](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/serial-bounded.png) |
 
 Running the text detection query in vision will provide us with the bounds for each `word` and `character` in the image. `Words` refers to a group of `characters`. You can see that the serial number is grouped along with some other characters.
 

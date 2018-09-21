@@ -114,9 +114,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
     }
     
     fileprivate func classificationsCallback(results: [[String: Double]]) {
-        let mockSerials = MockJamfProSerials()
-        let realSerials = ["CO2T83GXGTFM", "DLXNR94XG5VJ", "CO2K21PKDRVG", "CO2WN1FFHV2R", "F9FT5J0ZHLF9", "CO2PQDLUG8WP", "CO2TLOUWGTFM", "C02RJ321G8WM"]
-        let serials = mockSerials + realSerials
+        let serials = CoreComputer.getAll().map({$0.serialNumber})
         let serialFinder = SerialFinder(serialLength: 12, jamfProSerials: serials)
         let matchingSerials = serialFinder.matchingSerials(characterProbabilityDistributions: results)
         print(matchingSerials)

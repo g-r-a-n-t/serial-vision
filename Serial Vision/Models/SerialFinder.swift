@@ -11,27 +11,26 @@ import Foundation
 class SerialFinder {
     var serialLength: Int
     var jamfProPartialSerials: Set<String>
-    var frequentMistakes: [String: Set<String>]
+    
+    // Let contanstant so we don't need tons of memory to iterate through
+    let frequentMistakes: [String: Set<String>] = [
+        "7": ["1"],
+        "I": ["1", "7"],
+        "1": ["7", "1"],
+        "0": ["C", "O", "G"],
+        "O": ["C", "0", "G"],
+        "C": ["0", "O", "G"],
+        "G": ["C", "O", "0", "6"],
+        "6": ["G"],
+        "B": ["8"],
+        "8": ["B"]
+    ]
     
     init(serialLength: Int, jamfProSerials: [String]) {
         self.serialLength = serialLength
         self.jamfProPartialSerials = Set<String>()
-        self.frequentMistakes = [:]
+        
         self.setJamfProSerials(serials: jamfProSerials)
-        self.populateFrequentMistakes()
-    }
-    
-    func populateFrequentMistakes() {
-        self.frequentMistakes["7"] = ["1"]
-        self.frequentMistakes["I"] = ["1", "7"]
-        self.frequentMistakes["1"] = ["7", "1"]
-        self.frequentMistakes["0"] = ["C", "O", "G"]
-        self.frequentMistakes["O"] = ["C", "0", "G"]
-        self.frequentMistakes["C"] = ["0", "O", "G"]
-        self.frequentMistakes["G"] = ["C", "O", "0", "6"]
-        self.frequentMistakes["6"] = ["G"]
-        self.frequentMistakes["B"] = ["8"]
-        self.frequentMistakes["8"] = ["B"]
     }
     
     func mergeDicts <K, V> (left: [K:V], right: [K:V]) -> [K:V] {

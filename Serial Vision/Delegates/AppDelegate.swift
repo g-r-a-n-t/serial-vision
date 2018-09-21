@@ -16,10 +16,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         AppDelegate.main = self
+        
+        UserDefaults.standard.register(defaults: ["logout": false])
+        
+        if UserDefaults.standard.bool(forKey: "logout") {
+            UserDefaults.standard.set(false, forKey: "logout")
+            // Delete the username and password
+            UserDefaults.standard.removeObject(forKey: "url")
+            UserDefaults.standard.removeObject(forKey: "username")
+            UserDefaults.standard.removeObject(forKey: "password")
+        }
         return true
     }
 

@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Tab Bar Controller-->
+        <!--Root View Controller-->
         <scene sceneID="ReI-VM-DIX">
             <objects>
-                <tabBarController id="WyO-re-6Ps" sceneMemberID="viewController">
+                <tabBarController id="WyO-re-6Ps" customClass="RootViewController" customModule="Serial_Vision" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="N7G-tl-Pg3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>

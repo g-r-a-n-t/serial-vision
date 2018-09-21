@@ -29,10 +29,10 @@
             </objects>
             <point key="canvasLocation" x="-1335" y="233"/>
         </scene>
-        <!--View Controller-->
+        <!--Login Controller-->
         <scene sceneID="PBc-oq-LhU">
             <objects>
-                <viewController id="ZPH-O9-Uab" sceneMemberID="viewController">
+                <viewController id="ZPH-O9-Uab" customClass="LoginController" customModule="Serial_Vision" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="W8b-j2-AUi">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -101,6 +101,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YTN-Zt-0xX">
                                 <rect key="frame" x="168.5" y="341.5" width="38" height="30"/>
                                 <state key="normal" title="Login"/>
+                                <connections>
+                                    <action selector="loginClicked:" destination="ZPH-O9-Uab" eventType="touchUpInside" id="U1V-zY-5u6"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -113,6 +116,11 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="cpw-kd-wzm"/>
                     </view>
+                    <connections>
+                        <outlet property="passwordField" destination="J70-XV-OCx" id="hqK-Se-bdb"/>
+                        <outlet property="urlField" destination="3T0-fe-jbH" id="AaJ-IR-e0c"/>
+                        <outlet property="usernameField" destination="DQ7-v6-HJG" id="taa-so-VaU"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qXF-kN-dI7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

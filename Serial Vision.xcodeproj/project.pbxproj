@@ -18,6 +18,7 @@
 		C123E8F22147118C00CFDA0A /* Serial_Vision.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C123E8F02147118C00CFDA0A /* Serial_Vision.xcdatamodeld */; };
 		C123E8F42147118C00CFDA0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C123E8F32147118C00CFDA0A /* Assets.xcassets */; };
 		C123E8F72147118C00CFDA0A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C123E8F52147118C00CFDA0A /* LaunchScreen.storyboard */; };
+		C166F53F215532EE0039879D /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C166F53E215532EE0039879D /* LoginController.swift */; };
 		C1B5D33121503B91008A5EE5 /* SerialCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B5D33021503B91008A5EE5 /* SerialCodeView.swift */; };
 		C1B8A1422154293B00A53321 /* CoreHistory+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B8A13F2154293B00A53321 /* CoreHistory+CoreDataProperties.swift */; };
 		C1B8A1432154293B00A53321 /* CoreComputer+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B8A1402154293B00A53321 /* CoreComputer+CoreDataClass.swift */; };
@@ -47,6 +48,7 @@
 		C123E8F32147118C00CFDA0A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C123E8F62147118C00CFDA0A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C123E8F82147118C00CFDA0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C166F53E215532EE0039879D /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		C1B5D33021503B91008A5EE5 /* SerialCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerialCodeView.swift; sourceTree = "<group>"; };
 		C1B8A13F2154293B00A53321 /* CoreHistory+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreHistory+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C1B8A1402154293B00A53321 /* CoreComputer+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreComputer+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				C123E8EB2147118C00CFDA0A /* ViewController.swift */,
+				C166F53E215532EE0039879D /* LoginController.swift */,
 				C1B8A14D2154384500A53321 /* ComputerController.swift */,
 				C1B8A14B2154378800A53321 /* HistoryTableController.swift */,
 			);
@@ -275,6 +278,7 @@
 				C123E8F22147118C00CFDA0A /* Serial_Vision.xcdatamodeld in Sources */,
 				C1B5D33121503B91008A5EE5 /* SerialCodeView.swift in Sources */,
 				C1B8A1422154293B00A53321 /* CoreHistory+CoreDataProperties.swift in Sources */,
+				C166F53F215532EE0039879D /* LoginController.swift in Sources */,
 				E73C81F8215167E500EFD0AF /* RequestService.swift in Sources */,
 				C123E8EC2147118C00CFDA0A /* ViewController.swift in Sources */,
 				951782A3214B63980085DA2F /* SerialFinder.swift in Sources */,

@@ -1,6 +1,6 @@
 # Serial Vision
 
-Serial Vision is a smart app capable of detecting serial numbers on a Apple devices using live camera feed. It integrates with [Jamf Pro](https://www.jamf.com) so IT administrators can easily manage devices on the go.
+Serial Vision is a smart app capable of detecting serial numbers on Apple devices using live camera feed. It integrates with [Jamf Pro](https://www.jamf.com) so IT administrators can easily manage devices on the go.
 
 ## App Usage
 | Live video screen | Reading a serial | Information from the device |

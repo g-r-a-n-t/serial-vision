@@ -112,6 +112,7 @@
 				C123E8EB2147118C00CFDA0A /* ViewController.swift */,
 				C1DD981F21557E950069F4C6 /* ComputerInfoViewController.swift */,
 				C1B8A14B2154378800A53321 /* HistoryTableController.swift */,
+				C1B8A1492154336100A53321 /* HistoryCell.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -128,7 +129,6 @@
 			isa = PBXGroup;
 			children = (
 				C1B5D33021503B91008A5EE5 /* SerialCodeView.swift */,
-				C1B8A1492154336100A53321 /* HistoryCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";

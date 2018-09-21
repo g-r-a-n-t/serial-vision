@@ -3,8 +3,11 @@
 Serial Vision is a smart app capable of detecting serial numbers on an Apple device using live camera feed. It integrates with [Jamf Pro](https://www.jamf.com) so IT administrators can easily manage devices on the go.
 
 ## App Usage
-- pictures
-- Problem statement, proposed solution, overview of what you have built during the hackathon
+| Live video screen | Reading a serial | Information from the device |
+| --- | --- | --- |
+| ![Screenshot](/images/app-screenshot1.jpeg?raw=true) | ![Screenshot](/images/app-screenshot2.jpeg?raw=true) | ![Screenshot](/images/app-screenshot3.jpeg?raw=true) |
+
+The Serial Vision app gives admins the ability to quickly read serial numbers off the backs of devices, which then allows them to query details and manage on the go. This prototype lays the foundation for novel business solutions that could be added to Jamf's product line.
 
 ## Technical Implementation
 There are three main components to this app. The first is **text detection** - by this we mean detecting where characters are inside of an image. The second part is **character classification** of the detected characters. This step provides us with probability distributions for each identified character. The third step is **serial number determination** - taking the probability distributions and determining what serial number is contained in the image.

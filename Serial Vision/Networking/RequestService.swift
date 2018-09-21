@@ -13,26 +13,29 @@ class RequestService {
     typealias JSONDictionary = [String: Any]
     typealias QueryResult = ([CoreComputer]?, String) -> ()
     
+    private let hostname: String = "https://recbcct.kube.jamf.build"
+    private let credentials: String = "Basic YWRtaW46amFtZjEyMzQ="
+    
     var errorMessage = ""
     var dataTask: URLSessionDataTask?
     
     func getComputerRecords(completion: @escaping QueryResult) {
         dataTask?.cancel()
         
-        let myURL = NSURL(string: "https://recbcct.kube.jamf.build/JSSResource/computers/subset/basic")
+        let myURL = NSURL(string: "\(hostname)/JSSResource/computers/subset/basic")
         let request = NSMutableURLRequest(url: myURL! as URL)
         request.httpMethod = "GET"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
-        request.addValue("Basic YWRtaW46amFtZjEyMzQ=", forHTTPHeaderField: "Authorization")
+        request.addValue(credentials, forHTTPHeaderField: "Authorization")
         
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
         
-         let task = URLSession.shared.dataTask(with: request as URLRequest) { data, response, error in
+        let task = URLSession.shared.dataTask(with: request as URLRequest) { data, response, error in
             defer { self.dataTask = nil }
             if let error = error {
-                self.errorMessage += "DataTask error: " + error.localizedDescription + "\n"
+                self.errorMessage += "Error response: " + error.localizedDescription + "\n"
             } else if let data = data,
                 let response = response as? HTTPURLResponse,
                 response.statusCode == 200 {
@@ -42,6 +45,40 @@ class RequestService {
                 }
             }
         }
+        task.resume()
+    }
+    
+    func updateComputerUser(id: Int, username: String) {
+        dataTask?.cancel()
+        
+        let url = "\(hostname)/JSSResource/computers/id/\(id)"
+        let xml = """
+                <?xml version="1.0" encoding="UTF-8"?>
+                <computer>
+                  <location>
+                    <username>\(username)</username>
+                  </location>
+                </computer>
+                """
+        
+        let request = NSMutableURLRequest(url: URL(string: url)!)
+        request.httpMethod = "PUT"
+        request.httpBody = xml.data(using: String.Encoding.utf8, allowLossyConversion: true)
+        request.addValue("text/xml", forHTTPHeaderField: "Content-Type")
+        request.addValue(credentials, forHTTPHeaderField: "Authorization")
+        
+        let config = URLSessionConfiguration.default
+        let session = URLSession(configuration: config)
+        
+        let task = URLSession.shared.dataTask(with: request as URLRequest) { data, response, error in
+            defer { self.dataTask = nil }
+            if let error = error {
+                self.errorMessage += "Error response: " + error.localizedDescription + "\n"
+            } else {
+                print("Successfully updated user in Jamf Pro")
+            }
+        }
+        
         task.resume()
     }
     

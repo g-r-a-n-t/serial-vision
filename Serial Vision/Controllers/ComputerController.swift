@@ -23,8 +23,12 @@ class ComputerController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    @objc func dismissSelf() {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     func allowDismiss() {
-        var item = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismiss(animated:completion:)))
+        let item = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissSelf))
         self.navigationItem.leftBarButtonItem = item
     }
     

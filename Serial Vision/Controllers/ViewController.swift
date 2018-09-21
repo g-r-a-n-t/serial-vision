@@ -20,11 +20,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
     
     private let imageReader = ImageReader()
     private var findingSerial = false
-    private var foundSerial = false
     let requestService = RequestService()
     
     var serialNumber: String? {
         didSet {
+            guard self.serialNumber != nil else { return }
+            
             self.resultLabel.text = self.serialNumber
             // If we've seen this serial number update the history else create one
             if let history = CoreHistory.get(serial: self.serialNumber!) {
@@ -104,6 +105,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
         
         self.resultLabel.text = "Hold Camera to Serial #"
         self.resultLabel.textColor = UIColor.lightGray
+        self.serialNumber = nil
         self.captureSession?.startRunning()
     }
     
@@ -123,7 +125,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
             DispatchQueue.main.async {
                 self.serialNumber = matchingSerials[0].key
                 self.resultLabel.textColor = .green
-                self.foundSerial = true
             }
         }
         self.findingSerial = false
@@ -137,7 +138,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
     }
     
     public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        guard !self.findingSerial && !self.foundSerial else {
+        guard !self.findingSerial else {
             return
         }
         findingSerial = true

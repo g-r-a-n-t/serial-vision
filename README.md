@@ -12,13 +12,13 @@ There are three main components to this app. The first is text detection, by thi
 ### Text Detection
 Apple's general purpose language, Swift, contains a library named Vision. This library contains useful image analysis functionality. We used the text detection toolset to find the pixel bounds of each character, which was then used to isolate the characters for classification
 
-For example, say we are given this image of a MacBook Pro. The serial number is `CO2T83GXGTFM` as seen on the bottom right.
+For example, say we are given this image of a MacBook Pro. The serial number is `CO2T83GXGTFM` as seen on the bottom right. Running the text detection query in vision will provide us with the bounds for each `word` and `character` in the image. `Words` refers to a group of `characters`. You can see that the serial number is grouped along with some other characters.
 
-![MacBook Pro](https://raw.githubusercontent.com/g-r-a-n-t/serial-vision/master/images/serial.png)
+| Original  | Bounded  |
+| --------- | -------- |
+| ![MacBook Pro](https://raw.githubusercontent.com/g-r-a-n-t/serial-vision/master/images/serial.png) | ![MacBook Pro Bounded](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/serial-bounded.png) |
 
-Running the text detection query in vision will provide us with the bounds for each `word` and `character` in the image. `Words` refers to a group of `characters`. You can see that the serial number is grouped along with some other characters.
 
-![MacBook Pro Bounded](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/serial-bounded.png)
 
 ### Text classification
 
@@ -75,9 +75,26 @@ CO2T34FYVSTG
 Now when our algorithm is generating combinations, at each step it will only consider sequences that could exist in Jamf Pro. This makes it many times faster with its minimum complexity being `linear` and it maximum complexity being `polynomial`. Even with a very large Jamf Pro server the complexity tends towards linear.
 
 ## Classification Model
-- data collection
-- model description
-- model performance
+
+### Data Collection
+Collecting a dataset for this project within the given timeframe seemed at first like it would have been a difficult task, however, we were able to collect everything we needed within an afternoon.
+
+For this project, we needed a large number of 28x28 greyscale images, roughly 4000. In order to gather this information we first created a document including roughly 800 characters, each row containing a full alphanumeric set. We then took pictures of this document using our phones and ran them through the same preprocessing used in our app.
+
+|                  |                 |
+| ---------------- | --------------- |
+|  ![Document1](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/document1.jpeg) | ![Document2](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/document2.jpeg) |
+| ![Document3](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/document3.jpeg) | ![Document4](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/document4.jpeg) |
+*Images used to build our dataset*
+
+After processing each character, the results were dumped into a single directory. We then sorted though these dumps, looking for missing or extra images. Opening the finder window to display 12 thumbnails in a row made this task pretty easy, since a change in the sequence of each 36 characters was easy to detect. Upon detection of an anomaly, the extra image would be deleted or the missing character would be removed from or classification mapping file.
+
+![Training Data](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/training-data.png)
+
+### Design
+
+
+### Performance
 
 ## Analysis
 - what was learned

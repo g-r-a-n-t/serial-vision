@@ -18,6 +18,8 @@ class ComputerInfoViewController: UITableViewController {
     @IBOutlet weak var departmentNameLabel: UILabel!
     @IBOutlet weak var managedLabel: UILabel!
 
+    lazy var requestService = RequestService()
+    
     var serialNumber: String! {
         didSet {
             self.computer = CoreComputer.get(serial: self.serialNumber)
@@ -49,6 +51,14 @@ class ComputerInfoViewController: UITableViewController {
         super.viewWillAppear(animated)
         
         self.updateView()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        DispatchQueue.global(qos: .background).async {
+            self.requestService.updateComputerUser(id: Int(self.computer!.id), username: self.computer!.username)
+        }
     }
     
     func updateView() {

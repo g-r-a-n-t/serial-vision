@@ -48,7 +48,7 @@ class RequestService {
         task.resume()
     }
     
-    func updateComputerUser(id: Int, username: String) {
+    func updateComputerUser(id: Int, username: String?) {
         dataTask?.cancel()
         
         let url = "\(hostname)/JSSResource/computers/id/\(id)"
@@ -56,7 +56,7 @@ class RequestService {
                 <?xml version="1.0" encoding="UTF-8"?>
                 <computer>
                   <location>
-                    <username>\(username)</username>
+                    <username>\(username ?? "")</username>
                   </location>
                 </computer>
                 """

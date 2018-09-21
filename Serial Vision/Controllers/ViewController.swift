@@ -18,9 +18,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
     @IBOutlet weak var resultLabel: SerialCodeView!
     @IBOutlet weak var imageView: UIImageView!
     
-    private let imageReader = ImageReader()
+    private var imageReader: ImageReader!
     private var findingSerial = false
-    let requestService = RequestService()
+    lazy var requestService = RequestService()
     
     var serialNumber: String? {
         didSet {
@@ -41,6 +41,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, AVCaptur
     override func viewDidLoad() {
         super.viewDidLoad()
     
+        self.imageReader = ImageReader()
         self.getJamfInventory()
         
         self.captureSession = AVCaptureSession()

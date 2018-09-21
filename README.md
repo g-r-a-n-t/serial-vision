@@ -91,9 +91,10 @@ After processing each character, the results were dumped into a single directory
 After manually processing each picture, we combined the data into one set containing 3200 images. This was plenty enough to meet our needs.
 
 ### Design
-We used the Python library Keres, to help define and train our model. Keras is a high level API for ML development. Tensorflow was used by Keras to build and train our model in the background. The result of training was then converted to a CoreML file and added to our iOS project.
+We used the Python library Keres to help create and train our model. Keras is a high level API for ML development. Tensorflow was used by Keras to train our model in the background. The result of training was then converted to a CoreML file and added to our iOS project.
 
-The feature learning section of our model consists of two consecutive `Conv2D` layers, each with kernel sizes of 3, followed by a `MaxPooling2D` layer with a dropout rate of .25. The classification section consists of a `Flatten` layer, a `Dense` layer with a dropout rate of .5, and a `Softmax` classifier. We used ReLU for our activation function. We chose this model because it had been used by others successfully to classify characters.
+Our model is defined as such:
+![Model](https://github.com/g-r-a-n-t/serial-vision/raw/master/images/model.png)
 
 ### Performance
 

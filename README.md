@@ -113,9 +113,13 @@ The model was trained on 2,400 images and validated on 800 images with a batch s
 The performance of this model is equally as good on devices. Given that the characters are reasonably clear, the model will often predict with very high confidence the correct value.
 
 ## Analysis
-- what was learned
-- How your solution will create impact for your company
-- Performance achieved (on test set) – with visual representations as appropriate
--- How would it be used – e.g. part of existing product (which one?) / new product etc.
--- Best guess of time required for deployment of an MVP if this was to be implemented
-- key next steps and challenges identified for taking this solution from its current state to production
+
+The technology developed for this application would serve as a solid foundation for many use cases. Some brief examples include:
+
+- Removing EOL devices from Jamf Pro
+- Quick troubleshooting for common problems
+- Querying device information such as: hardware, management status, and location/user information
+- Updating user/location information
+- Sending management commands (the possibilities of this would be endless)
+
+Being able to quickly identify devices in Jamf Pro with a lightweight app would enable many forms of interaction that are not currently possible with just our web app. As it stands, if a user has a problem, the admin must manually search for that device in Jamf Pro using information provided by the user before they can start resolving the issue. If they are working with an ownerless device, they must copy the serial by hand into a search bar to identify it. We have confirmed with IT at Jamf that this would be a useful product. When asked for their thought, we were met with the response, "I've always wanted something like this, it would make my life so much easier." There's no doubt that this could be useful product for Jamf customers.

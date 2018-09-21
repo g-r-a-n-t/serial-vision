@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ComputerInfoViewController: UITableViewController {
+class ComputerInfoViewController: UITableViewController, UITextFieldDelegate {
     
     @IBOutlet weak var usernameField: UITextField!
     @IBOutlet weak var userImageView: UIImageView!
@@ -84,6 +84,14 @@ class ComputerInfoViewController: UITableViewController {
     @IBAction func usernameChanged(_ sender: UITextField) {
         self.computer.username = sender.text
         self.updateImage()
+    }
+    
+    // MARK : - UITextFieldDelegate
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print("hithere")
+        textField.resignFirstResponder()
+        return false
     }
 
     /*

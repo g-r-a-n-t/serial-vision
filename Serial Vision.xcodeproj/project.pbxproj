@@ -27,6 +27,7 @@
 		C1B8A14A2154336100A53321 /* HistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B8A1492154336100A53321 /* HistoryCell.swift */; };
 		C1B8A14C2154378800A53321 /* HistoryTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B8A14B2154378800A53321 /* HistoryTableController.swift */; };
 		C1B8A14E2154384500A53321 /* ComputerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B8A14D2154384500A53321 /* ComputerController.swift */; };
+		C1B8A1502155264C00A53321 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C1B8A14F2155264C00A53321 /* README.md */; };
 		E73C81ED2150449F00EFD0AF /* mobile-device-serials.txt in Resources */ = {isa = PBXBuildFile; fileRef = E73C81EC2150449F00EFD0AF /* mobile-device-serials.txt */; };
 		E73C81EF2151429800EFD0AF /* OCR.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = E73C81EE2151428E00EFD0AF /* OCR.mlmodel */; };
 		E73C81F8215167E500EFD0AF /* RequestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73C81F7215167E500EFD0AF /* RequestService.swift */; };
@@ -55,6 +56,7 @@
 		C1B8A1492154336100A53321 /* HistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryCell.swift; sourceTree = "<group>"; };
 		C1B8A14B2154378800A53321 /* HistoryTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableController.swift; sourceTree = "<group>"; };
 		C1B8A14D2154384500A53321 /* ComputerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerController.swift; sourceTree = "<group>"; };
+		C1B8A14F2155264C00A53321 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E73C81EC2150449F00EFD0AF /* mobile-device-serials.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "mobile-device-serials.txt"; sourceTree = "<group>"; };
 		E73C81EE2151428E00EFD0AF /* OCR.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = OCR.mlmodel; path = "Serial Vision/Assets/OCR.mlmodel"; sourceTree = SOURCE_ROOT; };
 		E73C81F7215167E500EFD0AF /* RequestService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestService.swift; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 		C123E8DD2147118C00CFDA0A = {
 			isa = PBXGroup;
 			children = (
+				C1B8A14F2155264C00A53321 /* README.md */,
 				C123E8E82147118C00CFDA0A /* Serial Vision */,
 				C123E8E72147118C00CFDA0A /* Products */,
 			);
@@ -250,6 +253,7 @@
 			files = (
 				E73C81ED2150449F00EFD0AF /* mobile-device-serials.txt in Resources */,
 				C123E8F72147118C00CFDA0A /* LaunchScreen.storyboard in Resources */,
+				C1B8A1502155264C00A53321 /* README.md in Resources */,
 				C123E8F42147118C00CFDA0A /* Assets.xcassets in Resources */,
 				C123E8EF2147118C00CFDA0A /* Main.storyboard in Resources */,
 			);

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14315.18" systemVersion="17G65" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CoreComputer" representedClassName="CoreComputer" syncable="YES">
+        <attribute name="building" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="department" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="deviceName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="managed" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="serialNumber" attributeType="String" syncable="YES"/>
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
@@ -11,7 +14,7 @@
         <attribute name="serialNumber" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
+        <element name="CoreComputer" positionX="-54" positionY="9" width="128" height="150"/>
         <element name="CoreHistory" positionX="-63" positionY="-18" width="128" height="75"/>
-        <element name="CoreComputer" positionX="-54" positionY="9" width="128" height="105"/>
     </elements>
 </model>
